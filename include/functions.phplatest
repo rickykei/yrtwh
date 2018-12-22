@@ -1,0 +1,319 @@
+<?php
+
+
+function correct_delTimeSlot_to_delDate($delivery_date,$delivery_timeslot){
+	
+	if($delivery_timeslot==1){
+		$delivery_date= date('Y-m-d 08:01',strtotime($delivery_date));
+	}else if($delivery_timeslot==2){
+		$delivery_date=date('Y-m-d 11:01',strtotime($delivery_date));
+	}else if($delivery_timeslot==3){
+		$delivery_date=date('Y-m-d 14:01',strtotime($delivery_date));
+	}
+	
+	return $delivery_date;
+}
+function choose_timeslot(){
+	$i=0;
+	if (date('H')>=8 && date('H')<11)
+		$i=1;
+	else if (date('H')>=11 && date('H')<14)
+		$i=2;
+	else if (date('H')>=14 && date('H')<18)
+		$i=3;
+	else
+		$i=4;
+ 
+		return $i;
+}
+function print_del_date_by_timeslot(){
+	
+	if (date('H')>=8 && date('H')<11)
+			echo Date("Y-m-d 08:01");
+	else if (date('H')>=11 && date('H')<14)
+		echo Date("Y-m-d 11:01");
+	else if (date('H')>=14 && date('H')<18)
+		echo Date("Y-m-d 14:01");
+	else
+		echo date('Y-m-d 08:01',strtotime(date("Y-m-d") . "+1 days"));
+}
+function add_del_time_SQL($invoicesql){
+	$datestr="";
+ 
+	if (date('H')>=8 && date('H')<11)
+		$datestr= Date("Y-m-d 11:00");
+	else if (date('H')>=11 && date('H')<14)
+		$datestr=date("Y-m-d 14:00");
+	else if (date('H')>=15 && date('H')<18)
+		$datestr=Date("Y-m-d 18:00");
+	else
+		$datestr=date('Y-m-d 12:00',strtotime(date("Y-m-d") . "+1 days"));
+	
+	$invoicesql=$invoicesql." and delivery_date <='$datestr'";
+	return $invoicesql;
+}
+
+function add_del_time_SQL_by($invoicesql,$s,$year,$month,$day){
+	$datestr=$year."-".$month."-".$day;
+ 
+	if ($s==1)
+		$datestr= Date("Y-m-d 11:00",strtotime($datestr));
+	else if ($s==2)
+		$datestr=date("Y-m-d 14:00",strtotime($datestr));
+	else if ($s==3)
+		$datestr=Date("Y-m-d 18:00",strtotime($datestr));
+	 
+	
+	$invoicesql=$invoicesql." and delivery_date <='$datestr'";
+	return $invoicesql;
+}
+
+function sqllog($sql)
+{
+	include("../include/config.php");
+    $query="SET NAMES 'UTF8'";
+    $connection = DB::connect($dsn);
+
+   if (DB::isError($connection))
+      die($connection->getMessage());
+
+		$sql2 = str_replace("'", "''", "$sql");
+		$username = $_SESSION[user_name];
+		$ip_addr = $_SERVER['REMOTE_ADDR'];
+		$page = $_SERVER['PHP_SELF'];
+		$log_sql = "INSERT INTO sql_log SET
+					ip_addr = '$ip_addr',
+					area = '$AREA',
+					pc = '$PC',
+					username = '$username',
+					page = '$page',
+					sql_stmt = '$sql2'";
+	 	$result=$connection->query($log_sql);
+	  if (DB::isError($result))
+    	  die ($result->getMessage());
+	
+}
+
+function chkUserName($dsn,$area,$pc)
+{
+	 
+    $query="SET NAMES 'UTF8'";
+    $connection = DB::connect($dsn);
+	   if (DB::isError($connection))
+      die($connection->getMessage());
+	$sql=" SELECT name FROM  `staff`  WHERE pc =  '".$pc."' AND area =  '".$area."' ";
+	$result=$connection->query($sql);
+	if (DB::isError($result))
+    	  die ($result->getMessage());
+    $row=$result->fetchRow(DB_FETCHMODE_ASSOC);
+    return $row["name"];
+}
+
+
+function findBalFromPartNo($goods_partno)
+{
+	
+	require_once("../include/config.php");
+	 $db = DB::connect($dsn);
+   if (DB::isError($db))
+      die($db->getMessage());
+	   $query="SET NAMES 'UTF8'";
+    if (DB::isError($db)) die($db->getMessage());
+	
+	 
+	 
+	$query = "SELECT * FROM sumgoods where goods_partno = '$goods_partno' and status='Y'";
+	 
+	$result =$db->query($query ) or die (mysql_error()."Couldn't execute query: $query");
+	$num_results=$result->numRows();
+	$row = $result->fetchRow(DB_FETCHMODE_ASSOC);
+	
+	// 20160315 Add bundle items code
+	if ($row['mix']=='N'){
+		//search stock bal  signle item Logic 2016
+		 $invoiceSql="select ifnull(sum(qty),0) as qty from invoice i , goods_invoice gi where deductstock='Y' and  i.invoice_no=gi.invoice_no and goods_partno = '$goods_partno' ";
+		 $invoiceSql=add_del_time_SQL($invoiceSql);
+		 
+		 $inshopSql="select ifnull(sum(qty),0) as qty from inshop i , goods_inshop gi where deductstock='Y' and i.inshop_no=gi.inshop_no and goods_partno = '$goods_partno'";
+		 
+		 $scrapSql= "select ifnull(sum(qty),0) as qty from goods_scrap gs where goods_partno = '$goods_partno'";
+		 
+		 $result2 = $db->query($invoiceSql);
+		 while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
+		 {
+		  $invoiceQty=$row2['qty'];
+		 }
+		 $result2 = $db->query($inshopSql);
+		 while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
+		 {
+		  $inshopQty=$row2['qty'];
+		 }
+		  $result2 = $db->query($scrapSql);
+		 while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
+		 {
+		  $scrapQty=$row2['qty'];
+		 }
+		 
+		 $stockbal=$inshopQty-$invoiceQty-$scrapQty;
+		 
+	}else if ($row['mix']=='S'){
+		//items code = slave
+		
+		 //search stock bal  signle item Logic 2016
+		 $invoiceSql="select ifnull(sum(qty),0) as qty from invoice i , goods_invoice gi where deductstock='Y' and  i.invoice_no=gi.invoice_no and goods_partno = '$goods_partno' ";
+		 $invoiceSql=add_del_time_SQL($invoiceSql);
+		 
+		 $inshopSql="select ifnull(sum(qty),0) as qty from inshop i , goods_inshop gi where deductstock='Y' and i.inshop_no=gi.inshop_no and goods_partno = '$goods_partno'";
+		 
+		 $scrapSql= "select ifnull(sum(qty),0) as qty from goods_scrap gs where goods_partno = '$goods_partno'";
+		 
+		 $result2 = $db->query($invoiceSql);
+		 while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
+		 {
+		  $invoiceQty=$row2['qty'];
+		 }
+		 $result2 = $db->query($inshopSql);
+		 while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
+		 {
+		  $inshopQty=$row2['qty'];
+		 }
+		  $result2 = $db->query($scrapSql);
+		 while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
+		 {
+		  $scrapQty=$row2['qty'];
+		 }
+		 
+		
+		 
+		
+		 //find Master product codes
+		$findMasterSql="select partno_src,qty from sumgoods_mix where partno_sub='$goods_partno' and sts='Y'";
+		$resultFindMasterSql =$db->query($findMasterSql ) or die (mysql_error()."Couldn't execute query: $findMasterSql");
+		$num_resultFindMasterSql=$resultFindMasterSql->numRows();
+		for ($i=0;$i<$num_resultFindMasterSql;$i++)
+		{
+			$row_resultFindMasterSql = $resultFindMasterSql->fetchRow(DB_FETCHMODE_ASSOC);
+			$masterItem[$i]=$row_resultFindMasterSql['partno_src'];
+			$masterItemStr.=",'".$row_resultFindMasterSql['partno_src']."'";
+		}
+		$masterItemStr=substr($masterItemStr, 1);
+		
+		 
+		 //find Mix Master Invoice out 
+		 $invoiceSql="select goods_partno, ifnull(sum(qty),0) as qty from invoice i , goods_invoice gi where deductstock='Y' and  i.invoice_no=gi.invoice_no and goods_partno in ($masterItemStr) ";
+		 $invoiceSql=add_del_time_SQL($invoiceSql);
+		 $invoiceSql.=" group by goods_partno ";
+		 
+		 $resultInvoiceSql =$db->query($invoiceSql ) or die (mysql_error()."Couldn't execute query: $invoiceSql");
+		    while($row2 = $resultInvoiceSql->fetchRow(DB_FETCHMODE_ASSOC))
+		 {
+		 $masterInvoiceQty+=$row2['qty'];
+		 }
+	 
+		 $invoiceQty=$invoiceQty+$masterInvoiceQty;
+		 
+		 $stockbal=$inshopQty-$invoiceQty-$scrapQty;
+
+	
+	}else if ($row['mix']=='Y'){
+		//items code = Master
+		//search stock bal for bundle item 20160315
+		
+		//find slave product codes
+		$findSlaveSql="select partno_sub from sumgoods_mix where partno_src='$goods_partno'";
+		$resultFindSlaveSql =$db->query($findSlaveSql ) or die (mysql_error()."Couldn't execute query: $findSlaveSql");
+		$num_resultFindSlaveSql=$resultFindSlaveSql->numRows();
+		
+		for ($i=0;$i<$num_resultFindSlaveSql;$i++)
+		{
+			$row_resultFindSlaveSql = $resultFindSlaveSql->fetchRow(DB_FETCHMODE_ASSOC);
+			$slaveItem[$i]=$row_resultFindSlaveSql['partno_sub'];
+			$slaveItemStr.=",'".$row_resultFindSlaveSql['partno_sub']."'";
+		}
+		$slaveItemStr=substr($slaveItemStr, 1);
+		  
+		//find master invoice bal
+		$invoiceSql="select ifnull(sum(qty),0) as qty from invoice i , goods_invoice gi where deductstock='Y' and  i.invoice_no=gi.invoice_no and goods_partno = '$goods_partno' ";
+		$invoiceSql=add_del_time_SQL($invoiceSql);
+		$result2 = $db->query($invoiceSql);
+		while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
+		{
+		  $invoiceQty=$row2['qty'];
+		}
+		
+		//find slave invoice bal , 
+		$invoiceSlaveSql="select goods_partno,ifnull(sum(qty),0) as qty from invoice i , goods_invoice gi where deductstock='Y' and  i.invoice_no=gi.invoice_no and goods_partno in ($slaveItemStr) ";
+		$invoiceSlaveSql=add_del_time_SQL($invoiceSlaveSql);
+		$invoiceSlaveSql.=" group by goods_partno ";
+		 
+		$result2 = $db->query($invoiceSlaveSql);
+		while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
+		{
+		  $tmp_partno=$row2['goods_partno'];
+		  $invoiceSlaveQty[$tmp_partno]=$row2['qty'];
+		}
+		
+		// find master inshop bal
+		 $inshopSql="select ifnull(sum(qty),0) as qty from inshop i , goods_inshop gi where deductstock='Y' and i.inshop_no=gi.inshop_no and goods_partno = '$goods_partno'";
+		  $result2 = $db->query($inshopSql);
+		 while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
+		 {
+		  $inshopQty=$row2['qty'];
+		 }
+		 
+		 //find slave inshop bal
+		  $inshopSlaveSql="select  goods_partno, ifnull(sum(qty),0) as qty from inshop i , goods_inshop gi where deductstock='Y' and i.inshop_no=gi.inshop_no and goods_partno in ($slaveItemStr)";
+		  $inshopSlaveSql.=" group by goods_partno ";
+		  $result2 = $db->query($inshopSlaveSql);
+		while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
+		{
+		  $tmp_partno=$row2['goods_partno'];
+		  $inshopSlaveQty[$tmp_partno]=$row2['qty'];
+		}
+		
+		 // find master scrap bal
+		  $scrapSql= "select ifnull(sum(qty),0) as qty from goods_scrap gs where goods_partno = '$goods_partno'";
+		  $result2 = $db->query($scrapSql);
+		 while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
+		 {
+		  $scrapQty=$row2['qty'];
+		 }
+		  // find slave scrap bal
+		 $scrapSlaveSql= "select goods_partno, ifnull(sum(qty),0) as qty from goods_scrap gs where goods_partno in ($slaveItemStr)";
+		 $scrapSlaveSql.=" group by goods_partno ";
+		 $result2 = $db->query($scrapSlaveSql);
+		 while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
+		 {
+		  $tmp_partno=$row2['goods_partno'];
+		  $scrapSlaveQty[$tmp_partno]=$row2['qty'];
+		 }
+		 
+		 // $stockbal=$inshopQty-$invoiceQty-$scrapQty;
+		 //cal inshopQty for slave 
+		 //
+		 
+		 for ($i=0;$i<$num_resultFindSlaveSql;$i++)
+		{
+			$tmp_partno=$slaveItem[$i];
+			$stockSlaveBal[$tmp_partno]=$inshopSlaveQty[$tmp_partno]- $invoiceSlaveQty[$tmp_partno]-$scrapSlaveQty[$tmp_partno];
+		 
+		}
+		
+		$lowerestBalSlaveArr=array_keys($stockSlaveBal, min($stockSlaveBal));
+		$lowerestBalSlave=$lowerestBalSlaveArr[0];
+		 
+		//  echo $lowerestBalSlave;
+		$slaveBalQty=$stockSlaveBal[$lowerestBalSlave]-$invoiceQty;
+		// echo $slaveBalQty;
+		$stockbal=$scrapQty+$slaveBalQty;
+		 
+	}
+	//echo $stockbal;
+	$prodresult['stockbal']=$stockbal;
+	$prodresult['scrapQty']=$scrapQty;
+	$prodresult['invoiceQty']=$invoiceQty;
+	$prodresult['inshopQty']=$inshopQty;
+	$prodresult['slaveBalQty']=$slaveBalQty;
+	return $prodresult;
+}
+?>

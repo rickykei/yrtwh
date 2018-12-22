@@ -1,0 +1,168 @@
+*{
+	/* Resetting the default styles of the page */
+	margin:0;
+	padding:0;
+}
+
+html{
+	overflow:auto;
+}
+
+body{
+	/* Setting default text color, background and a font stack */
+	font-size:0.825em;
+	color:#033;
+	/*background:url("img/bg.png") repeat-x #222222;*/
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+#carbonForm{
+	/* The main form container */
+	background-color:#CC6666;
+	border:1px solid #080808;
+	margin:20px auto;
+	padding:10px;
+	width:700px;
+	-moz-box-shadow:0 0 1px #444 inset;
+	-webkit-box-shadow:0 0 1px #444 inset;
+	box-shadow:0 0 1px #444 inset;
+}
+
+#carbonForm h1{
+	/* The form heading */
+	font-family:Century Gothic,Myriad Pro,Arial,Helvetica,sans-serif;
+	font-size:30px;
+	font-weight:normal;
+	padding:0 0 30px 10px;
+	text-align:left;
+}
+
+.fieldContainer{
+	/* The light rounded section, which contans the fields */
+	background-color:#FCC;
+	border:1px solid #0E0E0E;
+	padding:30px 10px;
+	/* CSS3 box shadow, used as an inner glow */
+	-moz-box-shadow:0 0 20px #292929 inset;
+	-webkit-box-shadow:0 0 20px #292929 inset;
+	box-shadow:0 0 20px #292929 inset;
+}
+
+#carbonForm,.fieldContainer,.errorTip{
+	/* Rounding the divs at once */
+	-moz-border-radius:12px;
+	-webkit-border-radius:12px;
+	border-radius:12px;
+}
+
+
+.formRow{
+	height:35px;
+	padding:5px;
+	position:relative;
+}
+
+.label{
+	float:left;
+	padding:0 10px 0 0;
+	text-align:right;
+	width:130px;
+}
+
+label{
+	font-family:Century Gothic,Myriad Pro,Arial,Helvetica,sans-serif;
+	font-size:13px;
+	letter-spacing:1px;
+	line-height:35px;
+}
+
+.field{
+	float:left;
+}
+
+.field input{
+	/* The text boxes */
+	border:1px solid white;
+	color:#000000;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:13px;
+	padding:4px 5px;
+	background:url("img/box_bg.png") repeat-x scroll left top #FFFFFF;
+	outline:none; /* Preventing the default Safari and Chrome text box highlight */
+}
+
+ input:hover, input:focus{
+	 
+	-moz-box-shadow: inset 1px 1px 10px #888;
+	-webkit-box-shadow: inset 1px 1px 10px #888;
+	box-shadow:0 0 20px lightblue;
+
+}
+.signupButton{
+	/* The submit button container */
+	text-align:center;
+	padding:10px 0 10px;
+}
+
+#submit{
+
+}
+
+#submit.active{
+	/* Marking the submit button as active adds the preloader gif as background */
+	 
+}
+
+#submit:hover{
+	/*background-color:#dcf2ff;
+	border:1px solid white;  */
+}
+
+
+
+.errorTip{
+	/* The error divs */
+	background-color:#970F08;
+	color:white;
+	font-size:13px;
+	height:26px;
+	letter-spacing:0.4px;
+	margin-left:10px;
+	padding:5px 0 5px 10px;
+    float:left;
+	text-shadow:1px 1px 0 #555555;
+	width:200px;
+
+	
+}
+	
+
+
+
+
+/* The styles below are only necessary for the styling of the demo page: */
+
+#footer{
+	position:fixed;
+	bottom:0;
+	width:100%;
+	padding:10px;
+	color:#eee;
+	text-align:center;
+	font-weight:normal;
+	font-style:italic;
+}
+
+a, a:visited {
+	color:#0196e3;
+	text-decoration:none;
+	outline:none;
+}
+
+a:hover{
+	text-decoration:underline;
+}
+
+a img{
+	border:none;
+}

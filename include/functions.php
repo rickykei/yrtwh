@@ -133,25 +133,15 @@ function findBalFromPartNo($goods_partno,$isPredict,$year,$month,$day,$dsn)
 	// 20160315 Add bundle items code
 	 
 		//search stock bal  signle item Logic 2016
-		 $invoiceSql="select ifnull(sum(qty),0) as qty from invoice i , goods_invoice gi where deductstock='Y' and  i.invoice_no=gi.invoice_no and goods_partno = '$goods_partno' and delivery!='W' ";
-		 
-		 if($isPredict<=0)
-		 $invoiceSql=add_del_time_SQL($invoiceSql);
-			else
-		 $invoiceSql=add_del_time_SQL_by($invoiceSql,$isPredict,$year,$month,$day);
+		 $invoiceSql="select ifnull(sum(qty),0) as qty from outstock i , goods_outstock gi where deductstock='Y' and  i.outstock_no=gi.outstock_no and goods_partno = '$goods_partno'   ";
 		 
 		  
-		 $inshopSql="select ifnull(sum(qty),0) as qty from inshop i , goods_inshop gi where deductstock='Y' and i.inshop_no=gi.inshop_no and goods_partno = '$goods_partno'";
+		 $inshopSql="select ifnull(sum(qty),0) as qty from instock i , goods_instock gi where deductstock='Y' and i.instock_no=gi.instock_no and goods_partno = '$goods_partno'";
 		 
-		 $scrapSql= "select ifnull(sum(qty),0) as qty from goods_scrap gs, scrap s where s.invoice_no=gs.invoice_no and goods_partno = '$goods_partno' ";
-		
-		 if($isPredict<=0)
-		 $scrapSql=add_del_time_SQL($scrapSql);
-			else
-		 $scrapSql=add_del_time_SQL_by($scrapSql,$isPredict,$year,$month,$day);
-	 
 		 
-		 echo $invoiceSql;
+		 
+		 
+		// echo $invoiceSql;
 		 $result2 = $db->query($invoiceSql);
 		 while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
 		 {
@@ -162,13 +152,9 @@ function findBalFromPartNo($goods_partno,$isPredict,$year,$month,$day,$dsn)
 		 {
 		  $inshopQty=$row2['qty'];
 		 }
-		  $result2 = $db->query($scrapSql);
-		 while(  $row2 = $result2->fetchRow(DB_FETCHMODE_ASSOC))
-		 {
-		  $scrapQty=$row2['qty'];
-		 }
 		 
-		 $stockbal=$inshopQty-$invoiceQty-$scrapQty;
+		 
+		 $stockbal=$inshopQty-$invoiceQty;
 		 
 	 
 	//echo $stockbal;

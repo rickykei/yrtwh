@@ -28,7 +28,7 @@
 
 //get outstock_goods
 
-	$sql="SELECT * FROM goods_outstock where outstock_no=$outstock_no";
+	$sql="SELECT * FROM goods_outstock where outstock_no=$outstock_no order by id ";
 	$outstockresult = $connection->query($sql);
 
 

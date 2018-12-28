@@ -29,31 +29,24 @@ function getBaseUrl()
 	}
 
 	$result = $connection->query("SET NAMES 'UTF8'");
-	if($model1=="")
-	$model1=$_POST["model1"];
-	if($model2=="")
-	$model2=$_POST["model2"];
+	 
 	$parent_id=$_GET['parent_id'];
 	if($parent_id=="")
 			$parent_id=$_POST['parent_id'];
 	//20170314
 	if ($_POST["action"]=="save"){
-	 
-		
-		
+	  
 		//find non empty input box from 10x5 
-		$temp=$_POST["input"][2][4];
+		 
 		for ($y=0;$y<7;$y++){
 				 
 		for ($x=0;$x<8;$x++){
 			if ($_POST["input"][$y][$x]!=""){
 				//update db
-				$sqlu="update sumgoods set model='".$model1."' , model2='".$model2."', model3_x='$x', model3_y='$y' where goods_partno='".$_POST["input"][$y][$x]."'";
+				$sqlu="update sumgoods set model3_x='$x', model3_y='$y' where goods_partno='".$_POST["input"][$y][$x]."'";
+				 
 				$result= $connection->query($sqlu);
-			}else{
-				$sqlu="update sumgoods set  model3_x=NULL, model3_y=NULL where model='".$model1."' and model2='".$model2."' and model3_x='".$x."' and model3_y='".$y."' ";
-				$result= $connection->query($sqlu);
-			}
+			} 
 		}
 		
 		}
@@ -93,10 +86,10 @@ function getBaseUrl()
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
 <script type="text/javascript" src="./js/js.storage.min.js"></script> 
-<script src="./pos/<?php echo $pos;?>.js"></script>
+<script src="./pos_outstock/<?php echo $pos;?>.js"></script>
  <script type="text/javascript" src="/js/jquery.numpad.js"></script>
  <link rel="stylesheet" href="./js/jquery.numpad.css">
-   <link rel="stylesheet" href="./ipadpos/styles.css">
+   <link rel="stylesheet" href="./pos_outstock/styles.css">
   <script  type="text/javascript">
   var pos='<?php echo $pos;?>';
  
@@ -144,8 +137,8 @@ function getBaseUrl()
 				
   };
   
- 
- function storeItem() {
+		/*
+		function storeItem() {
 	 
 			var item=[];
 			var items = localStorage.getItem(pos+'_myItems');
@@ -167,18 +160,18 @@ function getBaseUrl()
 			localStorage.setItem('pos',JSON.stringify(items));
 			refresh();
 			}
-			
+			*/
   </script>
  
 <div style=""> 
 	<div id="controlpanel">
-		 <?php include_once('./ipadpos/menu.php');?>
+		 <?php include_once('./pos_outstock/menu.php');?>
 	<hr>
 	
 		
 	<hr>
 		<div id="product">
-		<form name="form1" action="/?page=ipadpos&subpage=index3_admin.php&pos=<?php echo $pos;?>" method="post" data-ajax="false" >
+		<form name="form1" action="/?page=pos_outstock&subpage=index3_admin.php&pos=<?php echo $pos;?>" method="post" data-ajax="false" >
 		<input type="hidden" name="model1" value="<?php echo $model1;?>">
 		<input type="hidden" name="model2" value="<?php echo $model2;?>">
 		<input type="hidden" name="parent_id" value="<?php echo $parent_id;?>">
@@ -214,7 +207,7 @@ function getBaseUrl()
 		</div>
 	</div>
 	<div style="position: fixed; right: 0;top :0;" id="list-items">
-	<a href="/?pos=<?php echo $pos;?>&page=ipadpos&subpage=index3.php&model1=<?php echo $model1;?>&model2=<?php echo $model2;?>&model3=<?php echo $model3;?>&parent_id=<?php echo $parent_id;?>" data-ajax="false">唯讀</a>
+	<a href="/?pos=<?php echo $pos;?>&page=pos_outstock&subpage=index3.php&model1=<?php echo $model1;?>&model2=<?php echo $model2;?>&model3=<?php echo $model3;?>&parent_id=<?php echo $parent_id;?>" data-ajax="false">唯讀</a>
  
 	<div id="page_footage">
 	

@@ -9,15 +9,15 @@
 
 		$parent_id=$_GET['parent_id'];
 	 $type1Result = $connection->query("SELECT * FROM type where level='1' and parent_id=".$parent_id);
-      if (DB::isError($type1Result))
-      die ($type1Result->getMessage());
+     if (DB::isError($type1Result))
+     die ($type1Result->getMessage());
   
-  $model1=$_GET['parent1_name'];
+	$model1=$_GET['parent1_name'];
   
   //if ($PC=='99')
   //$index3_page="index3_admin";
 //	else
-  $index3_page="index3";
+	$index3_page="index3";
     include_once("index_edit_js.php");
 
   ?> 
@@ -55,11 +55,11 @@
 <body>
 <div style=""> 
 	<div id="controlpanel"  >
-		 <?php include_once('./posv2/menu.php');?>
+		 <?php include_once('./pos_outstock/menu.php');?>
 	 
-		 <?php include_once('./posv2/footage.php');?>
+		 <?php include_once('./pos_outstock/footage.php');?>
 	 
-		<div id="model">
+		<div id="model2">
 		<table border="0">
 		<?php 
 		$i=0;
@@ -71,7 +71,7 @@
 			 }
 			
 			?>
-			<td><a class="ui-button ui-widget ui-corner-all" href="/?id=<?php echo $id;?>&pos=<?php echo $pos;?>&page=posv2&subpage=<?php echo $index3_page;?>.php&model1=<?php echo $model1;?>&model2=<?php echo stripslashes($typerow['typeName']);?>&parent_id=<?php echo stripslashes($typerow['id']);?>" rel="external"><?php echo stripslashes($typerow['typeName']);?></a></td>
+			<td><a class="ui-button ui-widget ui-corner-all" href="/?id=<?php echo $id;?>&pos=<?php echo $pos;?>&page=pos_outstock&subpage=<?php echo $index3_page;?>.php&model1=<?php echo $model1;?>&model2=<?php echo stripslashes($typerow['typeName']);?>&parent_id=<?php echo stripslashes($typerow['id']);?>" rel="external"><?php echo stripslashes($typerow['typeName']);?></a></td>
 			 <?php
 			  $i++;
 			  

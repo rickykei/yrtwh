@@ -1,5 +1,4 @@
 <?php 
- 
 include_once("./include/config.php");
 $connection = DB::connect($dsn);
   if (DB::isError($connection)){
@@ -27,33 +26,30 @@ $connection = DB::connect($dsn);
 		
 	  //20180801 insert items to localStorage if action = edit
 	  <?php if($_REQUEST['action']=='edit'){
-		$invoice_no=$_REQUEST['id'];
-		 $sql="Select invoice_no,member_id,customer_detail,receiver from invoice where invoice_no = ".$invoice_no;
+		$outstock_no=$_REQUEST['outstock_no'];
+		 $sql="Select * from outstock where outstock_no = ".$outstock_no;
 		$invoiceResult = $connection->query($sql);
 		$invoicerow = $invoiceResult->fetchRow();
 	
 				$js_array = json_encode($invoicerow);
 				echo " invoice_header = ". $js_array . ";\n";	
 	
-		$sql="select qty,goods_partno,goods_detail,marketprice,discountrate,status,subtotal,manpower,cutting,deductstock,delivered from goods_invoice where invoice_no=".$id." order by id asc";
+		$sql="select a.*, a.qty as qty,b.qty_per_unit as qty_per_unit, b.weight as weight from goods_outstock a,sumgoods b where outstock_no=".$outstock_no." and a.goods_partno=b.goods_partno order by a.id asc";
 			$goods_invoiceResult = $connection->query($sql);
 			$i=0;
 			while($goods_invoicerow = $goods_invoiceResult->fetchRow(DB_FETCHMODE_ASSOC))
 			{
-				$goods_invoice[$i][0]=$goods_invoicerow['qty'];
+				
+					 
+				$goods_invoice[$i][0]=$goods_invoicerow['goods_partno'];
 				$goods_invoice[$i][1]=$goods_invoicerow['goods_partno'];
 				$goods_invoice[$i][2]=$goods_invoicerow['goods_detail'];
-				$goods_invoice[$i][3]=$goods_invoicerow['marketprice'];
-				$goods_invoice[$i][4]="";
-				$goods_invoice[$i][5]=$goods_invoicerow['discountrate'];
-				$goods_invoice[$i][6]=$goods_invoicerow['status'];
-				$goods_invoice[$i][7]=$goods_invoicerow['subtotal'];
-				$goods_invoice[$i][8]=$goods_invoicerow['manpower'];
-				$goods_invoice[$i][9]=$goods_invoicerow['deductstock'];
-				$goods_invoice[$i][10]=$goods_invoicerow['cutting'];
-				$goods_invoice[$i][11]=$goods_invoicerow['delivered'];
+				$goods_invoice[$i][3]=$goods_invoicerow['box'];
+				$goods_invoice[$i][4]=$goods_invoicerow['qty'];
+				$goods_invoice[$i][5]=$goods_invoicerow['place'];
+				$goods_invoice[$i][6]=$goods_invoicerow['qty_per_unit'];
+				$goods_invoice[$i][7]=$goods_invoicerow['weight'];
 				
-			
 				$i++;
 			}
 			
@@ -62,7 +58,7 @@ $connection = DB::connect($dsn);
 	  ?>
 			   
 				 
-						console.log(item);
+						console.log('item'+item);
 	
 	
 						//item[0] = $('#qty'+i).val();
@@ -70,7 +66,7 @@ $connection = DB::connect($dsn);
 						//item[2] = $('#goods_detail'+i).val();
 						//item[3] = $('#market_price'+i).val();
 						 //items.push(item);
-						  localStorage.setItem(pos+'_myInvoice','['+JSON.stringify(invoice_header)+']');
+						 localStorage.setItem(pos+'_myOutstock','['+JSON.stringify(invoice_header)+']');
 						 localStorage.setItem(pos+'_myItems',JSON.stringify(item));
 						 item=[];
 					refresh(); 	
@@ -103,13 +99,13 @@ $connection = DB::connect($dsn);
 	<div   id="controlpanel">
 	 <?php
 	
-	 include_once('./posv2/menu_edit.php');?>
+	 include_once('./pos_outstock/menu_edit.php');?>
 	  
 	 <?php 
 	 
-	  include_once('./posv2/footage.php');?>
+	  include_once('./pos_outstock/footage.php');?>
 	
-		<div id="model">C=皇冠, D=鑽石&德萊板, F=富美家, G=西德板, H=雅美家, P=保麗雅, S=松耐特, T=德利板, V=雅高
+		<div id="model"> 
 		<table border="0">
 		<?php 
 		$i=0; 
@@ -121,7 +117,7 @@ $connection = DB::connect($dsn);
 			 }
 			 
 			?>
-			 <td><a class="ui-button ui-widget ui-corner-all" href="/?id=<?php echo $id;?>&pos=<?php echo $pos;?>&page=posv2&subpage=index2_edit.php&parent1_name=<?php echo stripslashes($typerow['typeName']);?>&parent_id=<?php echo stripslashes($typerow['id']);?>"  rel="external" ><?php echo stripslashes($typerow['typeName']);?></a></td>
+			 <td><a class="ui-button ui-widget ui-corner-all" href="/?id=<?php echo $id;?>&outstock_no=<?php echo $outstock_no;?>&pos=<?php echo $pos;?>&page=pos_outstock&subpage=index2_edit.php&parent1_name=<?php echo stripslashes($typerow['typeName']);?>&parent_id=<?php echo stripslashes($typerow['id']);?>"  rel="external" ><?php echo stripslashes($typerow['typeName']);?></a></td>
 			 <?php
 			 $i++;
 			 if ($i==5){

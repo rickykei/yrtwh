@@ -1,6 +1,4 @@
 <?php 
-
- 
  include_once("./include/config.php");
  $connection = DB::connect($dsn);
    if (DB::isError($connection))
@@ -56,7 +54,7 @@
 	 
 	  include_once('./pos_outstock/footage.php');?>
 	
-		<div id="model">C=皇冠, D=鑽石&德萊板, F=富美家, G=西德板, H=雅美家, P=保麗雅, S=松耐特, T=德利板, V=雅高
+		<div id="model"> 
 		<table border="0">
 		<?php 
 		$i=0; 

@@ -28,9 +28,11 @@ if ($add==1) //after submit
    else
    {
  
-    $query="insert into sumgoods (box_label_start_num,weight, qty_per_unit,goods_partno,goods_detail,market_price,allstock,status,admin_view,remark,model,model2,model3,model3_x,model3_y,unitid,inshop_quota,inshop_box,sell_out_qty,sell_out_unit,thereafter_price,thereafter_qty,market_price_door,buy_in_unit,pos_label) values ($box_label_start_num,$weight,  $qty_per_unit,'$goods_partno','$goods_detail',0,0,'Y','N','$remark','$model','$model2','$model3','$model3_x','$model3_y','$unitid','$inshop_quota','$inshop_box','$sell_out_qty','$sell_out_unit','$thereafter_price','$thereafter_qty','$market_price_door','$buy_in_unit','$pos_label')";
+    $query="insert into sumgoods (box_label_start_num,weight, qty_per_unit,goods_partno,     goods_detail, market_price,allstock,status,admin_view,remark,model,model2,model3,model3_x,model3_y,unitid,inshop_quota,inshop_box,sell_out_qty,sell_out_unit,thereafter_price,thereafter_qty,market_price_door,buy_in_unit,pos_label) values 
+								($box_label_start_num,$weight,$qty_per_unit,'$goods_partno','$goods_detail',0          ,0       ,'Y'   ,'N','$remark','$model','$model2','$model3','$model3_x','$model3_y','$unitid','$inshop_quota','$inshop_box','$sell_out_qty','$sell_out_unit','$thereafter_price','$thereafter_qty','$market_price_door','$buy_in_unit','$pos_label')";
 	 
 
+	 
       if (mysql_query($query)){
 		   $message="Success!";  
 		   if ($partno_sub!=""){

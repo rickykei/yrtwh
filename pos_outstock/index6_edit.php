@@ -1,177 +1,197 @@
-﻿<?php // error_reporting( E_ALL ); ?>
-<script type="text/javascript" src="./js/js.storage.min.js"></script> 
 <script language="javascript">
+
  $(function() {
-	 var pos='<?php echo $pos;?>';
 	 ls=Storages.localStorage;
-	ls.remove(pos+'_myItems');
-	ls.remove(pos+'_memadd');
-	ls.remove(pos+'_memid');
-	 	ls.remove(pos+'_receiver');
+	ls.remove('myItems');
  });
+ 
 function popUp(URL) {
 day = new Date();
 id = day.getTime();
-eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=1,width=800,height=600');");
+eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=800,height=600');");
 }
 </script><?
-$ok=0;
-$totalcounter=0;
-
-$invoice_no=$id;
-//count input
-for ($i=0;$i<count($goods_partno);$i++)
+$outstockRecord=18;		//全張表共有十行記錄
+$totalcounter=0;		//預設
+//測試己用多少記錄
+for ($i=0;$i<$outstockRecord;$i++)
 {
 	if ($goods_partno[$i]!="")
 	$totalcounter++;
-//echo $goods_partno[$i]."@".$goods_detail[$i]."@".$qty[$i]."@".$discount[$i]."<br>";
- 
 }
 
-//get name
-include_once("./include/config.php");
-include_once("./include/functions.php");
-   $query="SET NAMES 'UTF8'";
+//連線mysql
+	include("./include/config.php");
+	$query="SET NAMES 'UTF8'";
     $connection = DB::connect($dsn);
+
+	if (DB::isError($connection))
+		die($connection->getMessage());
+
+//解決mysql中文連線
+	$result = $connection->query("SET NAMES 'UTF8'");
+		if (DB::isError($result))
+      		die ($result->getMessage());
+		
+		 
+if ($update==3)
+{//edit
+  $query="update outstock set outstock_date='$outstock_date', staff_name='$staff_name',to_shop='$to_shop',delivery_method='$delivery_method'  where outstock_no= '$outstock_no'";
+    $result=$connection->query($query);
+  if (DB::isError($result)) die ($result->getMessage());
+  //del goods_stock
    
-   if (DB::isError($connection))
-      die($connection->getMessage());
+  $query="delete from goods_outstock where outstock_no =$outstock_no";
+    $result=$connection->query($query);
+  if (DB::isError($result)) die ($result->getMessage());
+  //add goods_stock
 
-   // (Run the query on the winestore through the connection
-   $result = $connection->query("SET NAMES 'UTF8'");
-   if (DB::isError($result))
-      die ($result->getMessage());
-
-
-
+    for ($i=0;$i<$totalcounter;$i++)
+  {
+	$goods_detail_enc[$i]= addslashes($goods_detail[$i]);
+   $query="insert into goods_outstock (outstock_no,goods_partno,goods_detail,qty,box,place) ";
+   $query.=" values ('$outstock_no','$goods_partno[$i]','$goods_detail_enc[$i]','$qty[$i]','$box[$i]','$place[$i]') ";
    
-	
-
-  //backup old invoice  20130717
   
-   $query="select * from invoice where invoice_no='".$id."'";
-   $oldInvoiceResult = $connection->query($query);
-   $oldInvoiceRow = $oldInvoiceResult->fetchRow(DB_FETCHMODE_ASSOC);
-   
-   
-   //20181110 remove <low price backup , request by alvin  backup all modified invoice now
- //if ($oldInvoiceRow['total_price']>$subsubtotal){
-  //backup old invoice item  20130717
-  // insert amend log if the subtotal amount is changed 20170115
-  
-  $query="insert into invoice_amend (lastname,amend_invoice_id,amend_sales_name,amend_by,amend_date,creation_date,created_by,invoice_no,invoice_date,delivery_date,delivery_timeslot,sales_name,customer_name,customer_tel,customer_detail,member_id,branchID,delivery,man_power_price,discount_percent,discount_deduct,special_man_power_percent,total_price,settle,deposit,deposit_method,credit_card_rate,settledate,receiver) ";
-  $query.=" values ('$lastname','','$sales','$browseryrt',SYSDATE(),'".$oldInvoiceRow['creation_date']."','".$oldInvoiceRow['created_by']."',".$oldInvoiceRow['invoice_no'].",'".$oldInvoiceRow['invoice_date']."','".$oldInvoiceRow['delivery_date']."','".$oldInvoiceRow['delivery_timeslot']."','".$oldInvoiceRow['sales_name']."','".$oldInvoiceRow['customer_name']."','".$oldInvoiceRow['customer_tel']."','".$oldInvoiceRow['customer_detail']."',".$oldInvoiceRow['member_id'].",'".$oldInvoiceRow['branchID']."','".$oldInvoiceRow['delivery']."',".$oldInvoiceRow['man_power_price'].",".$oldInvoiceRow['discount_percent'].",".$oldInvoiceRow['discount_deduct'].",".$oldInvoiceRow['special_man_power_percent'].",".$oldInvoiceRow['total_price'].",'".$oldInvoiceRow['settle']."',".$oldInvoiceRow['deposit'].",'".$oldInvoiceRow['deposit_method']."',".$oldInvoiceRow['credit_card_rate'].",'".$oldInvoiceRow['settledate']."','".$oldInvoiceRow['receiver']."')";
   $result=$connection->query($query);
-	   
-	 
+  	if (DB::isError($result))
+  	{
+      die ($result->getMessage("OO"));
+	  $success=1;
+   	}
+	}
+}
+else{
+//add
+
+  $query="insert into outstock (outstock_no,outstock_date,entry_date,staff_name,to_shop,delivery_method) ";
+  $query.=" values ('$outstock_no','$outstock_date',now(),'$staff_name','$to_shop','$delivery_method')";
+
+  
+ 
+  $result=$connection->query($query);
+  if (DB::isError($result)) die ($result->getMessage());
+
+//查詢入貨單編號
   $query="SELECT LAST_INSERT_ID();";
   $result=$connection->query($query);
   if (DB::isError($result)) die ($result->getMessage());
   $row=$result->fetchRow();
-  $amend_invoice_id=$row[0];
-  
+  $outstock_no=$row[0];
  
- 
-
-  $query="select * from goods_invoice where invoice_no='".$id."'";
-   $oldGoodInvoiceResult = $connection->query($query);
-   while($oldGoodInvoiceRow = $oldGoodInvoiceResult->fetchRow(DB_FETCHMODE_ASSOC))
-   {
-       $query="insert into goods_invoice_amend (id,amend_invoice_id,amend_id,amend_date,invoice_no,goods_partno,qty,discountrate,marketprice,status,subtotal,manpower,goods_detail,deductstock,cutting,delivered) ";
-       $query.=" values(".$oldGoodInvoiceRow['id'].",".$amend_invoice_id.",'',sysdate(),".$oldGoodInvoiceRow['invoice_no'].",'".$oldGoodInvoiceRow['goods_partno']."',".$oldGoodInvoiceRow['qty'].",".$oldGoodInvoiceRow['discountrate'].",".$oldGoodInvoiceRow['marketprice'].",'".$oldGoodInvoiceRow['status']."',".$oldGoodInvoiceRow['subtotal'].",'".$oldGoodInvoiceRow['manpower']."','".$oldGoodInvoiceRow['goods_detail']."','".$oldGoodInvoiceRow['deductstock']."','".$oldGoodInvoiceRow['cutting']."','".$oldGoodInvoiceRow['delivered']."')";
-	
-       $result=$connection->query($query);
-	    if (DB::isError($result)) die ($result->getMessage());
-   
-   }
- //}
-  //backup old invoice item  20130717
-  
-  if(!isset($void))
-	  $void='A';
-  //insert invoice
-  $query="update invoice set void='$void',lastname='$lastname',last_update_date=SYSDATE(),call_count=call_count+1,last_update_by='$browseryrt',invoice_date ='$invoice_date' , delivery_date = '$delivery_date' , sales_name= '$sales' ,customer_name = '$mem_name' ,customer_tel = '$mem_tel' ,customer_detail = '$mem_add' ,member_id ='$mem_id',settle='$status',branchID='$AREA', delivery = '$delivery' ,man_power_price= '$man_power_price' ,discount_percent = '$subdiscount', discount_deduct= '$subdeduct',  special_man_power_percent='$special_man_power_percent',total_price='$subsubtotal',deposit='$deposit',deposit_method='$deposit_method',credit_card_rate='$creditcardrate' ,settledate = '$settledate' ,receiver = '$receiver' ,delivery_timeslot ='$delivery_timeslot' where invoice_no='".$id."'";
-  
- // $query.=" values ('',now(),'$delivery_date','$sales','$mem_name','$mem_tel','$mem_add','$mem_id','A','$AREA','$delivery','$man_power_price','$discount_percent','$discount_deduct')";
- 
-//20100112
-	sqllog($query);
-//20100112
-
-  $result=$connection->query($query);
-  if (DB::isError($result))
-      die ($result->getMessage());
-     // 
-      
-	  
-	  
-	//delete all goods_invoice in old invoice first
-	$sql="delete from goods_invoice where invoice_no='".$id."'";
-//20100112
-	sqllog($sql);
-//20100112
-  $result = $connection->query($sql);
-   if (DB::isError($result))
-   die ($result->getMessage());
-   
-   
   for ($i=0;$i<$totalcounter;$i++)
   {
-   $query="insert into goods_invoice (invoice_no,goods_partno,qty,discountrate,marketprice,status,subtotal,manpower,goods_detail,deductstock,cutting,delivered) ";
-   $query.=" values    ('$id','$goods_partno[$i]','$qty[$i]','$discount[$i]','$market_price[$i]','A','$subtotal[$i]','$manpower[$i]','$goods_detail[$i]','$deductStock[$i]','$cutting[$i]','$delivered[$i]')";
-   //20100112
-    
-	sqllog($query);
-//20100112
+   $query="insert into goods_outstock (outstock_no,goods_partno,goods_detail,qty,box,place) ";
+   $query.=" values ('$outstock_no','$goods_partno[$i]','$goods_detail[$i]','$qty[$i]','$box[$i]','$place[$i]')";
+ 
   $result=$connection->query($query);
   	if (DB::isError($result))
   	{
       die ($result->getMessage());
-      
-      $status=0;
-      }
-      else
-      {
-      	$status=1;
-      }
-      
+	  $success=1;
+   	}
+	
+  	
+  }
    
-  }
-  
  
-  //20170110
-  // add high risk invoice audit log  if $oldInvoiceRow['total_price']>$subsubtotal
-  if ( ($oldInvoiceRow['total_price']>$subsubtotal && substr($oldInvoiceRow['last_update_date'],0,10)==date("Y-m-d")) or ($oldInvoiceRow['total_price']>$subsubtotal && substr($oldInvoiceRow['creation_date'],0,10)==date("Y-m-d"))){
-	  echo "highrisk";
-	   $query=" insert into invoice_high_risk (id,invoice_no,from_total,to_total,staffName,amend_by,creation_date,branchID) values ('','$id','".$oldInvoiceRow['total_price']."','$subsubtotal','$sales','$browseryrt','".$oldInvoiceRow['creation_date']."','".$oldInvoiceRow['branchID']."') ";
-	  
-	  $result=$connection->query($query);
-  	if (DB::isError($result))
-  	{
-      die ($result->getMessage());
-	}
-	  
-  }
-  echo "CMP3";
-  if ($status==1)
-  //echo "invoice insert Success=".$invoice_no;
-  {
-  	include_once("./pdf2/pdf.php");
-?>
-<SCRIPT LANGUAGE="JavaScript">
-popUp("/invoice/pdf/<?=$id?>.pdf");
-window.location="/?page=invoice&subpage=invoicelist.php";
-</script><?
 }
-  /*
-	for ($i=0;$i<$totalcounter;$i++)
-	{
-		$query="select * from sumgoods where goods_id='".$goods_id[$i]."'";
-		$result=$connection->query($query);
-		if (DB::isError($result)) 
-		      die ($result->getMessage());
-    $row = $result->fetchRow();
-    $goods_name[$i]=$row[3];
-    $market_price[$i]=$row[4];
-	}*/		      
-?>
+
+ if ($success==0)
+	  include_once("./pdf2/pdf_outstock.php");
+  
+  
+?> <SCRIPT LANGUAGE="JavaScript">
+popUp("/outstock/pdf/<?=$outstock_no?>.pdf");
+//window.location="/?page=outstock&subpage=index.php"; 
+</script>
+<link href="./include/outstock.css" rel="stylesheet" type="text/css">
+ 
+<table width="880"  border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#99CCCC">
+
+  <tr>
+    <td>&nbsp;</td>
+    <td width="870" align="center" valign="top"><table width="100%" height="100%" border="0" cellpadding="2" cellspacing="0">
+      <tr>
+        <td width="14%" height="21" bgcolor="#006666" class="style6">入倉單</td>
+        <td width="34%"><? echo "< ".$AREA."鋪,第".$PC."機 >";?></td>
+        <td width="15%"></td>
+        <td width="37%">&nbsp;</td>
+      </tr>
+      <tr bgcolor="#FFFFFF">
+        <td height="24" colspan="4"><table width="100%" border="0" cellpadding="2" cellspacing="0">
+          <tr bgcolor="#006666">
+            <td width="20%" height="21"><span class="style6"> 發票日期 ：</span></td>
+            <td width="29%"><span class="style6"><? echo $outstock_date; ?></span></td>
+            <td><span class="style6">職員 :</span></td>
+            <td><span class="style6"><? echo $staff_name; ?></span></td>
+          </tr>
+          
+        </table></td>
+      </tr>
+	  <tr bgcolor="#006666" >
+            <td width="20%" height="21">
+                <span class="style6"> 軍地倉去：</span></td>
+            <td width="28%" > 
+			<span class="style6"><?php echo $to_shop;?></span>
+             </td>
+            <td width="17%" ><span class="style6">運送方法 : </span></td>
+            <td width="35%" ><span class="style6"><?php echo $delivery_method;?></span></td>
+          </tr>
+      <tr bgcolor="#FFFFFF">
+        <td colspan="4"><table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF">
+         <tr bgcolor="#006666">
+            <td width="6%"><span class="style6">行數</span></td>
+            <td width="24%"><span class="style6">貨品編號</span></td>
+            <td width="7%"><span class="style6">箱數量</span></td>
+			<td width="7%"><span class="style6">裝數量</span></td>
+            <td width="30%"><span class="style6">貨品描述</span></td>
+            <td width="11%" class="style6">儲放位置</td>
+			<td width="30%"><span class="style6">箱編號</span></td>
+            
+          </tr>
+<?$elements_counter=4;
+for ($i=0;$i<$totalcounter;$i++)          
+{
+	?>
+     <tr bgcolor="#CCCCCC"> 
+            <td><div align="center"><? echo $i+1; ?></div></td>
+            <td><? echo $goods_partno[$i]; ?></td>
+ <td><div align="center"><? echo $box[$i]; ?></div></td>
+            <td><? echo $qty[$i]; ?></td>
+                     
+			
+              <td><div align="center"><? echo htmlspecialchars($goods_detail[$i]); ?></div></td>
+            <td><? echo $place[$i]; ?></td>
+            <td><? echo calOutstockBoxNum($goods_partno[$i],$box[$i],$outstock_no,$connection); ?></td>
+     </tr>
+<?}?>      </table>          </td>
+      </tr>
+      <tr bgcolor="#FFFFFF">
+        <td height="" colspan="4">
+                    </td>
+      </tr>
+      <tr>
+        <td height=""><?if ($update!=3){
+echo "<a href=\"/?page=outstock&subpage=index.php\">回提貨單頁</a>";
+echo "</br>";}
+?></td>
+        <td height=""><?
+		if ($update==3){
+echo "<a href=\"/?page=outstock&subpage=outstocklist.php\">回所有提貨單</a>";
+echo "</br>";}
+?></td>
+        <td height=""><input type="hidden" name="AREA" value="<? echo $AREA; ?>" /><input type="hidden" name="PC" value="<? echo $PC; ?>" /></td>
+        <td>&nbsp;</td>
+      </tr>
+    </table></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="23">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+</form></body>
+</html>

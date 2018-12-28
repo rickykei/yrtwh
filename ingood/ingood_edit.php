@@ -13,7 +13,7 @@ if ($update==1)
    $goods_detail=addslashes($goods_detail);
    
     
-   $query="update sumgoods set box_label_start_num='$box_label_start_num',status='$status', goods_detail='$goods_detail',  unitid='$unitid', qty_per_unit=$qty_per_unit,weight=$weight,pos_label='$pos_label'  where goods_partno='$goods_partno'";
+   $query="update sumgoods set box_label_start_num='$box_label_start_num',status='Y', goods_detail='$goods_detail',  unitid='$unitid', qty_per_unit=$qty_per_unit,weight=$weight,pos_label='$pos_label' ,model='$model',model2='$model2',model3='$model3' ,model3_x='$model3_x' ,model3_y='$model3_y' where goods_partno='$goods_partno'";
 	 
 	  
 	 

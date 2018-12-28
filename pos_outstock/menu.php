@@ -17,7 +17,7 @@
 		 
 		 <a class="ui-button ui-widget ui-corner-all" href="#" id="backlink">上一頁</a>
 		 <a class="ui-button ui-widget ui-corner-all" href="#" id="nextlink">下一頁</a>
-		 <a class="ui-button ui-widget ui-corner-all" href="/?pos=<?php echo $pos;?>&page=pos_outstock&subpage=index4.php" rel="external" id="ino">出貨單</a>
+		 <a class="ui-button ui-widget ui-corner-all" href="/?pos=<?php echo $pos;?>&page=pos_outstock&subpage=index5.php" rel="external" id="ino">提貨單</a>
 	
 		 <a class="ui-button ui-widget ui-corner-all" href="" rel="external" id="cleanall">清空</a>
 	

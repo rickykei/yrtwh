@@ -12,3 +12,25 @@ body {
 	font-family: "新細明體";
 }
 .blocktextbox { background-color : #CCCCCC; color : #000000; cursor : auto; }
+a:link{
+ 
+text-decoration:none;
+background-color:#ffffff;
+}
+a:visited {
+ 
+color:#ffffff;
+background-color:red;
+}
+a:hover {
+ 
+text-decoration:underline;
+background-color:#fafafa;
+color:ffffff;
+}
+a:active {
+ 
+text-decoration:none;
+background-color:gray;
+color:#fafafa;
+}

@@ -1,3 +1,5 @@
+#product,#model2{width:1000px;float:left}
+#product{font-size:0.7em;}
 #page_footage{float: left;  }
 #model { width:80%;float: left;}
 #controlpanel { width:80%;float: left;}
@@ -7,6 +9,15 @@
 #quick_mem_add_div{float: left; position:relative; }
 .quickinput_memadd{width:400px;}
  
+
+ #product a.ui-button , #product  a.ui-button:visited, #product a.ui-button:hover{
+	margin: 0px;
+	 width: auto;
+	height:auto;
+	font-size: 1.5em;
+	padding:0px;
+	
+}
 #mem_add{width:800px;}
 a.ui-button ,a.ui-button:visited,a.ui-button:hover{
 	margin: 0px;

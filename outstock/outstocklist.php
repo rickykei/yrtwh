@@ -158,7 +158,11 @@ echo $Pager->numPages;
  
    
    
-  <td><a href="/?page=outstock&subpage=outstockedit.php&outstock_no=<?=$row['outstock_no']?>&update=2&goods_partno2=<?=$goods_partno2?>&goods_partno=<?=$goods_partno?>&goods_detail=<?=$goods_detail?>&market_price=<?=$market_price?>" class="b">修改</a></td>
+  <td>
+  <a href="/?page=outstock&subpage=outstockedit.php&outstock_no=<?=$row['outstock_no']?>&update=2&goods_partno2=<?=$goods_partno2?>&goods_partno=<?=$goods_partno?>&goods_detail=<?=$goods_detail?>&market_price=<?=$market_price?>" class="b">修改</a>
+  [<a  href="/?page=pos_outstock&subpage=index_edit.php&pos=pos1_edit&outstock_no=<?=$row['outstock_no']?>&action=edit"  target="_blank">POS</a>]
+  
+  </td>
   <td><a target="_blank" href="/outstock/pdf/<?=$row['outstock_no']?>.pdf" class="b">PDF</a></td>
   </tr>
 <?

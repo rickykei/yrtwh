@@ -9,39 +9,36 @@ var pos='pos1_edit';
 	
 	 function refresh() {
 		var total=0;
-		var items = localStorage.getItem(pos+'_myInvoice'); 
+		var items = localStorage.getItem(pos+'_myOutstock'); 
 		var ul = $('#rightlist');
 		ul.html('');
 		if (items != null) {
 			items = JSON.parse(items);
 			$(items).each(function (index, data) {
 				ul.append('<tr><td colspan="1">單號 : </td><td colspan="4">'+ data[0]+'</td></tr>');
-				ul.append('<tr><td colspan="1">客戶編號 : </td><td colspan="4">'+ data[1]+'</td></tr>');
-				ul.append('<tr><td colspan="1">收貨人 : </td><td colspan="4">'+ data[3]+'</td></tr>');
-				ul.append('<tr><td colspan="1">地址 : </td><td colspan="4">'+ data[2]+'</td></tr>');
+		 
 			 
 			});
 		}
 	 
 		
 		items = localStorage.getItem(pos+'_myItems');
-		// ul = $('ul');
-		//ul.html('');
+			var ul = $('#rightlist');
 		if (items != null) {
 			items = JSON.parse(items);
 			$(items).each(function (index, data) {
 				var tmp=index+1;
-				total=total+(parseFloat(data[3])*parseFloat(data[0]));
+				total=total+(parseFloat(data[4])*parseFloat(data[7]));
 				console.log('totalprice='+total);
 		
-			ul.append('<tr><td>['+tmp+']</td><td>' + data[2] +' </td><td><a class="chgQty" data="'+index+'" dataDesc="'+data[2]+'" >'+ data[0] +'  件</a></td><td>($'+data[3]+') </td><td><a class="remove" data="'+index+'">X</a></td></tr>');
+			ul.append('<tr><td>['+tmp+']</td><td>' + data[1] +' </td><td><a class="chgQty" data="'+index+'" dataDesc="'+data[2]+'" >'+ data[3] +'  箱</a></td><td><a class="chgQty" data="'+index+'" dataDesc="'+data[2]+'" >'+ data[4] +'件</a></td><td>'+data[5]+' </td><td><a class="remove" data="'+index+'">X</a></td></tr>');
 			});
-		 	ul.append('<tr><td>總數:</td><td colspan=3> '+total+'</td></tr>');
+		 	ul.append('<tr><td>總重:</td><td colspan=3> '+total+'</td></tr>');
 		}
 		
 		
 		
-		var ino = localStorage.getItem('invoiceno');
+		var ino = localStorage.getItem('outstockno');
 		 
 		 var inoed=$('#ino_ed');
 		 var inoh=$('#ino');
@@ -58,10 +55,8 @@ var pos='pos1_edit';
    $(document).on('click', '#cleanall', function(){
 	ls=Storages.localStorage;
 	ls.remove(pos+'_myItems');
-	ls.remove(pos+'_memadd');
-	ls.remove(pos+'_memid');
-	ls.remove(pos+'_receiver');
-	ls.remove('invoiceno');
+ 
+	ls.remove('outstockno');
 	inoh.show();
 	 refresh(); 
 	});
@@ -71,7 +66,7 @@ var pos='pos1_edit';
 		var id=$(this).attr("data");
 		 $('#desc') .val('tempdesc');
 		$('#action').val(id);
-	 	$('#qty').click();
+	 	$('#out_box').click();
 		
 	});
   
@@ -127,7 +122,7 @@ var pos='pos1_edit';
 		
 		$("#quickinput").autocomplete({
 			minLength: 1,
-		    source: "./pos/search_partno.php",
+		    source: "./pos_outstock/search_partno.php",
 			focus: function (event, ui) {
 				$("#quickinput").val(ui.item.value);
 				return false;
@@ -148,51 +143,18 @@ var pos='pos1_edit';
 			  quickinput();
 			
 		});
-		// click mem_id
-		$('.quickinput_memid').click(function(){
-			  quickinputMemID();
-		});
-		// click mem_add
-		$('.quickinput_memadd').click(function(){
-			  quickinputMemAdd();
-		});
-		// click receiver
-		$('.quickinput_receiver').click(function(){
-			  quickinputReceiver();
-		});
-		
+		 
 		
 	  });
 	  
-	   function quickinputMemAdd(){
-		  
-				var items = localStorage.getItem(pos+'_memadd');
-				items = new Array();
-				items.push($('#mem_add').val());
-				localStorage.setItem(pos+'_memadd',JSON.stringify(items));
-				refresh();
-	  }
-	  
-	  function quickinputMemID(){
-		var items = localStorage.getItem(pos+'_memid');
-		items = new Array();
-		items.push($('#mem_id').val());
-		localStorage.setItem(pos+'_memid',JSON.stringify(items));
-		refresh();
-	  }
+	 
 	  
 	  function quickinput(){
 		  $('#partno').val($('#quickinput').val());
 			findPartNo($('#partno').val());
-		 	$('#qty').click();
+		 	$('#out_box').click();
 	  }
-	   function quickinputReceiver(){
-		var items = localStorage.getItem(pos+'_receiver');
-		items = new Array();
-		items.push($('#receiver').val());
-		localStorage.setItem(pos+'_receiver',JSON.stringify(items));
-		refresh();
-	  }
+	   
 	 function storeItem() {
 		 
 		 
@@ -204,11 +166,15 @@ var pos='pos1_edit';
 		 
 		if(id=='' ){
 			 
-				item[0] = $('#qty').val();
-				item[1] =$('#partno').val();
-				item[2] = $('#desc').val();
-				item[3] = $('#price').val();
-				item[4] = $('#readonly').val();		
+				item[0] = $('#partno').val();
+				item[1] = $('#partno').val();
+				item[2] = $('#detail').val();		
+				item[3] = $('#out_box').val();
+				item[4] = $('#out_box').val()*$('#qty_per_unit').val();
+				item[5] = $('#place').val();		
+				item[6] = $('#qty_per_unit').val();		
+				item[7] = $('#weight').val();		
+				
 					 
 				if (items != null) {
 					items = JSON.parse(items);

@@ -47,7 +47,11 @@ body {
         <td><div align="center">  </div></td>
         <td align="center"><a href="/?page=pos_outstock&subpage=index.php&pos=pos1">POS 提貨單</a></td>
       </tr>
-      
+       <tr bgcolor="#CCCCCC">
+        <td align="center" height="20"> </td>
+        <td><div align="center">  </div></td>
+        <td align="center"></td>
+      </tr>
 	      <tr bgcolor="#CCCCCC">
         <td align="center"> </td>
         <td><div align="center"> <a target="_blank" href="/?page=statistic&subpage=inventory.php">存貨表 </a></div></td>

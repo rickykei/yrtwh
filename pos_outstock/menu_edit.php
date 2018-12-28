@@ -17,7 +17,8 @@
 		 
 		 <a class="ui-button ui-widget ui-corner-all" href="#" id="backlink">上一頁</a>
 		 <a class="ui-button ui-widget ui-corner-all" href="#" id="nextlink">下一頁</a>
-		 <a class="ui-button ui-widget ui-corner-all" href="/?pos=<?php echo $pos;?>&page=posv2&subpage=index4_edit.php&id=<?php echo $id;?>" rel="external" id="ino">更改出貨單</a>
+		  
+		 <a class="ui-button ui-widget ui-corner-all" href="/?pos=<?php echo $pos;?>&page=pos_outstock&subpage=index5_edit.php&outstock_no=<?php echo $outstock_no;?>" rel="external" id="ino">改出貨單</a>
 		 <a class="ui-button ui-widget ui-corner-all" href="" rel="external" id="cleanall">清空</a>
 	
 		 <br>
@@ -26,7 +27,7 @@
 		  while ($typerow = $type0Result->fetchRow(DB_FETCHMODE_ASSOC))
 		 { 
 			 ?>
-			<a class="ui-button ui-widget ui-corner-all" href="/?id=<?php echo $id;?>&pos=<?php echo $pos;?>&page=posv2&subpage=index2_edit.php&parent1_name=<?php echo stripslashes($typerow['typeName']);?>&parent_id=<?php echo stripslashes($typerow['id']);?>"  rel="external" ><?php echo stripslashes($typerow['typeName']);?></a> 
+			<a class="ui-button ui-widget ui-corner-all" href="/?id=<?php echo $id;?>&pos=<?php echo $pos;?>&page=pos_outstock&subpage=index2_edit.php&parent1_name=<?php echo stripslashes($typerow['typeName']);?>&parent_id=<?php echo stripslashes($typerow['id']);?>"  rel="external" ><?php echo stripslashes($typerow['typeName']);?></a> 
 			  <?php
 		}?>
 		

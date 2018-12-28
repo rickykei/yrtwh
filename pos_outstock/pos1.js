@@ -10,61 +10,27 @@ var pos='pos1';
 	 function refresh() {
 		var total=0;
 		
-		var items = localStorage.getItem(pos+'_memid'); 
-		var ul = $('#rightlist');
-		ul.html('');
-		if (items != null) {
-			items = JSON.parse(items);
-			$(items).each(function (index, data) {
-				var tmp=index+1;
-			ul.append('<tr><td colspan="2">客戶編號 : </td><td colspan="3">'+ data+'</td>');
-			});
-		}
-		
-		items = localStorage.getItem(pos+'_memadd');		
-		 if (items != null) {
-			items = JSON.parse(items);
-			$(items).each(function (index, data) {
-				var tmp=index+1;
-			ul.append('<tr><td >地址 </td><td colspan="3">'+ data+'</td>');
-			});
-		}
-		
-		items = localStorage.getItem(pos+'_receiver');		
-		 if (items != null) {
-			items = JSON.parse(items);
-			$(items).each(function (index, data) {
-				var tmp=index+1;
-			ul.append('<tr><td >收貨人</td><td colspan="3">'+ data+'</td>');
-			});
-		}
-		
+		 
 		items = localStorage.getItem(pos+'_myItems');
-		// ul = $('ul');
-		//ul.html('');
+		var ul = $('#rightlist');
+		 ul.html('');
 		if (items != null) {
 			items = JSON.parse(items);
 			$(items).each(function (index, data) {
 				var tmp=index+1;
-				total=total+(parseFloat(data[3])*parseFloat(data[0]));
+				total=total+(parseFloat(data[0])*parseFloat(data[6]));
 				console.log('totalprice='+total);
-			ul.append('<tr><td>['+tmp+']</td><td>' + data[2] +'</td> <td> <a class="chgQty" data="'+index+'" dataDesc="'+data[2]+'" >'+ data[0] +'  件</a></td><td>($'+data[3]+')</td><td> <a class="remove" data="'+index+'">X</a></td></tr>');
+			ul.append('<tr><td>['+tmp+']</td><td>' + data[1] +'</td> <td> <a class="chgQty" data="'+index+'" dataDesc="'+data[2]+'" >'+ data[0] +' 箱</a></td><td>'+data[0]*data[5]+'件 </td><td>'+data[4]+'</td><td> <a class="remove" data="'+index+'">X</a></td></tr>');
 			});
-				ul.append('<tr><td colspan="1">總數:</td><td colspan="3"> <b>'+total+'</b></td></tr>');
+				ul.append('<tr><td colspan="1">總重:</td><td colspan="3"> <b>'+total+'</b></td></tr>');
 		}
 		
 		
 		var ino = localStorage.getItem('invoiceno');
-		 
-	 
+ 
 		 var inoh=$('#ino');
 		 
-		 
-		  
-		
-	
-	}
-	
+	 }
 	
 
 	
@@ -218,11 +184,14 @@ var pos='pos1';
 		 
 		if(id=='' ){
 			 
-				item[0] = $('#qty').val();
-				item[1] =$('#partno').val();
-				item[2] = $('#desc').val();
-				item[3] = $('#price').val();
-				item[4] = $('#readonly').val();		
+				item[0] = $('#out_box').val();
+				item[1] = $('#partno').val();
+				item[2] = $('#rest_qty').val();
+				item[3] = $('#rest_box').val();
+				item[4] = $('#place').val();		
+				item[5] = $('#qty_per_unit').val();
+				item[6] = $('#weight').val();
+				item[7] = $('#detail').val();
 					 
 				if (items != null) {
 					items = JSON.parse(items);

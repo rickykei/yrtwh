@@ -57,6 +57,14 @@ body {
         <td><div align="center"> <a target="_blank" href="/?page=statistic&subpage=inventory.php">存貨表 </a></div></td>
         <td align="center"><span class="style6"><a href="/?page=staff&subpage=index.php" target="_blank">員工設定</a></span></td>
       </tr>
+	  
+	  
+	  
+	      <tr bgcolor="#CCCCCC">
+        <td align="center"> </td>
+        <td><div align="center"> <a target="_blank" href="/?page=statistic&subpage=location_inventory.php">行數分佈 </a></div></td>
+        <td align="center"><span class="style6"> </span></td>
+      </tr>
       
       
 	   

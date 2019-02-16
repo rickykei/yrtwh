@@ -136,7 +136,11 @@ while($goods_outstockrow = $outstockresult->fetchRow(DB_FETCHMODE_ASSOC))
             <td><input  name="goods_partno[]" type="text" id="goods_partno<?echo $i;?>" value="<? echo $goods_outstockrow['goods_partno']; ?>" tabindex="<?$tab++;echo $tab?>" size="15" maxlength="30"  />
             <input type=button name="search" value=".." onClick="javascript:AddrWindow(<?echo $elements_counter;$elements_counter=$elements_counter+7;?>)" >
             <input name="action<?=$i?>" type="button" id="action<?=$i?>"  value="?" /></td>
-			<td><input name="place[]" type="text" id="place<?echo $i;?>" tabindex="<?$tab++;echo $tab?>" value="<? echo $goods_outstockrow['place']; ?>"  size="3" maxlength="3" /></td>
+			<td>
+			<select name="place[]" id="place<? echo $i; ?>" tabindex="<?$tab++;echo $tab?>">
+			 <option value="<? echo $goods_outstockrow['place']; ?>"><? echo $goods_outstockrow['place']; ?></option>
+			</select>
+			<? echo $goods_outstockrow['place']; ?>
             
 			<td><div align="center">
 			   <input name="box[]" type="text" id="box<?echo $i;?>" tabindex="<?$tab++;echo $tab?>" class="box" value="<? echo $goods_outstockrow['box']; ?>" size="6" maxlength="6"  onFocus="checkStock(<?=$i?>)" >
@@ -166,15 +170,19 @@ for ($y=$i;$y<$outstockRecord;$y++)
             <td><input  name="goods_partno[]" type="text" id="goods_partno<?echo $y;?>" value="<? echo $goods_outstockrow['goods_partno']; ?>" tabindex="<?$tab++;echo $tab?>" size="15" maxlength="30"  />
             <input type=button name="search" value=".." onClick="javascript:AddrWindow(<?echo $elements_counter;$elements_counter=$elements_counter+7;?>)" >
             <input name="action<?=$i?>2" type="button" id="action<?=$y?>"  value="?" /></td>
-			  <td><input name="place[]" type="text" id="place<?echo $y;?>" tabindex="<?$tab++;echo $tab?>"   value="0"  size="3" maxlength="3" /></td>
+			  <td>
+			  <select name="place[]" id="place<? echo $y; ?>" tabindex="<?$tab++;echo $tab?>">
+			 
+			</select>
+			 </td>
             <td><div align="center">
-			   <input name="box[]" type="text" id="box<?echo $y;?>" tabindex="<?$tab++;echo $tab?>" class="box" value="0" size="6" maxlength="6" onFocus="javascript:document.getElementById('action<?=$y?>').click();">
+			   <input name="box[]" type="text" id="box<?echo $y;?>" tabindex="<?$tab++;echo $tab?>" class="box" value="0" size="6" maxlength="6" onFocus="checkStock(<?=$y?>)">
 			 </div></td>
 			<td>
 			<input type="hidden" id="qty_per_unit<? echo $i; ?>" value=""/>
 			<input type="hidden" id="weight_per_unit<? echo $i; ?>" value="0"/>
 			<input type="hidden" id="weight_per_row<? echo $i; ?>" value="0"/>
-			<input  name="qty[]" type="text" id="qty<?echo $y;?>"  tabindex="<?$tab++;echo $tab?>"  value="0" size="7" maxlength="7"></td>
+			<input  name="qty[]" type="text" id="qty<?echo $y;?>"  tabindex="<?$tab++;echo $tab?>"  value="0" size="7" maxlength="7"  onFocus="checkInputQty(<?=$i?>)"></td>
               <td><div align="center">
               <input name="goods_detail[]" type="text" id="goods_detail<?echo $y;?>" value="" size="35" maxlength="40">
             </div></td>

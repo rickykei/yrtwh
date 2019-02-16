@@ -61,7 +61,7 @@ function Body($invoice_no)
    
   $border=0;
    $header_height=5;
-	$body_height=6;
+	$body_height=8;
  
 	$this->Cell(30,$header_height,iconv("UTF-8", "BIG5-HKSCS",""),$border,0,'R',0);
 	$this->Cell(82,$header_height,iconv("UTF-8", "BIG5-HKSCS",'亞馬遜貿易有限公司'),$border,0,'C',0);
@@ -101,12 +101,12 @@ function Body($invoice_no)
 	$this->Ln(4);
 	$this->Cell(142,$header_height,iconv("UTF-8", "BIG5-HKSCS",'提貨單'),$border,1,'C',0);
 	
-	$this->Cell(15,$body_height,iconv("UTF-8", "BIG5-HKSCS","位置".$row2['place']),$border,0,'R',0);
+	$this->Cell(10,$body_height,iconv("UTF-8", "BIG5-HKSCS","位置".$row2['place']),$border,0,'R',0);
 	
-	$this->Cell(60,$body_height,iconv("UTF-8", "BIG5-HKSCS","貨品名稱"),$border,0,'C',0);
+	$this->Cell(60,$body_height,iconv("UTF-8", "BIG5-HKSCS","貨品名稱"),$border,0,'R',0);
 	$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS","箱數"),$border,0,'C',0);
 	$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS","裝數"),$border,0,'R',0);
-	$this->Cell(25,$body_height,iconv("UTF-8", "BIG5-HKSCS",'重量 (KG)'),$border,1,'R',0);
+	$this->Cell(32,$body_height,iconv("UTF-8", "BIG5-HKSCS",'重量 (KG)'),$border,1,'L',0);
 	
 
 //print goods_invoice
@@ -121,11 +121,14 @@ function Body($invoice_no)
    {
 	 
    $weight=getPartNoWeight($row2['goods_partno'],$connection)*$row2['qty'];
-   $this->Cell(15,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$row2['place']),$border,0,'R',0);
-	 $this->Cell(60,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$row2['goods_detail']),$border,0,'C',0);
-	$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$row2['box']."(".calOutstockBoxNum($row2['goods_partno'],$row2['box'],$invoice_no,$connection).")"),$border,0,'C',0);
+   $this->Cell(10,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$row2['place']),$border,0,'R',0);
+	
+	$this->Cell(60,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$row2['goods_detail']),$border,0,'R',0);
+	//remove box num requested by alvin 20190109
+	//$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$row2['box']."(".calOutstockBoxNum($row2['goods_partno'],$row2['box'],$invoice_no,$connection).")"),$border,0,'C',0);
+	$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$row2['box'],$border,0,'C',0);
 	$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$row2['qty']),$border,0,'R',0);
-	$this->Cell(25,$body_height,iconv("UTF-8", "BIG5-HKSCS",''.$weight),$border,1,'R',0);
+	$this->Cell(32,$body_height,iconv("UTF-8", "BIG5-HKSCS",''.$weight),$border,1,'L',0);
 	
 	 $totalBox+=$row2['box'];
 	$totalWeight+=$weight;
@@ -135,7 +138,7 @@ function Body($invoice_no)
    $this->SetFont('Big5','',14);
    $result->free ();
 	$this->Ln(10);
-	$this->Cell(32,$body_height,iconv("UTF-8", "BIG5-HKSCS","軍地倉去"),$border,0,'R',0);
+	$this->Cell(22,$body_height,iconv("UTF-8", "BIG5-HKSCS","軍地倉去"),$border,0,'R',0);
 	$this->Cell(40,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$to_shop),$border,0,'R',0);
 	$this->Cell(40,$body_height,iconv("UTF-8", "BIG5-HKSCS",""),$border,0,'L',0);
 	$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$delivery_method),$border,0,'R',0);

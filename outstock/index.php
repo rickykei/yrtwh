@@ -39,7 +39,7 @@
     <td height="360">&nbsp;</td>
     <td align="center" valign="top"><table width="101%" height="100%" border="0" cellpadding="2" cellspacing="0">
       <tr>
-        <td width="14%" height="21" bgcolor="#006666" ><span class="style6"><a href="/">提貨單</a></span></td>
+        <td width="14%" height="21" bgcolor="#006666" ><span class="style6">提貨單</span></td>
         <td width="34%"><? echo "< ".$AREA."鋪,第".$PC."機 >";?></td>
         <td width="15%">&nbsp;</td>
         <td width="37%">&nbsp;</td>

@@ -6,79 +6,56 @@ include("./include/config.php");
 
 	if (DB::isError($connection))
 		die($connection->getMessage());
-	
- 	$prod_id = $_REQUEST['action'];
-	$prod_id = $_REQUEST['prod_id'];
-	$product_make=$_REQUEST['product_make'];
-	$product_model=$_REQUEST['product_model'];
-	
-	
- 
-	$total_unit = 0;
-	$total_price = 0;
-	 
-	 
-	$sql="select * from sumgoods ";
-	
-	 
-if($prod_id!=''){
-$sql=$sql." and product_id = '$prod_id' ";
-}
-if($product_made!=''){
-$sql=$sql." and product_made = '$product_made' ";
-}
-if($product_model!=''){
-$sql=$sql." and product_model = '$product_model' ";
-}
-
-//echo $sql;	
-//echo $sql2;
-
-	  
-  $result=$connection->query($sql);
-  if (DB::isError($result)) die ($result->getMessage());
-    
-	$i=0;
-		 while ( $row = $result->fetchRow(DB_FETCHMODE_ASSOC) ){	
-				 
- 
-			$sprod_id[$i]=$row["goods_partno"];
-			
-					 
-					 //get instock record 
-				$sqlIn = "SELECT IFNULL(sum(qty),0) as qty, IFNULL(sum(box),0) as box  FROM goods_instock where goods_partno='".$sprod_id[$i]."'" ;
+  
+				//get instock record 
+				$sqlIn = "SELECT goods_partno,IFNULL(sum(qty),0) as qty, IFNULL(sum(box),0) as box ,place FROM goods_instock group by goods_partno,place order by place ";
 			 
 				//get outstock record
-				$sqlOut = "SELECT IFNULL(sum(qty),0) as qty, IFNULL(sum(box),0) as box FROM goods_outstock where goods_partno='".$sprod_id[$i]."'" ;
+				
 				 
 				//echo $sqlIn;
 				//echo $sqlOut;
 				 
 		 
 				  $queryRecordsIn=$connection->query($sqlIn);
-				   $queryRecordsOut=$connection->query($sqlOut);
-				 
+				   
+				 $i=0;
 				//iterate on results row and create new index array of data
 				while( $rowIn = $queryRecordsIn->fetchRow(DB_FETCHMODE_ASSOC) ) { 
-					if($rowIn!=null)
+					if($rowIn!=null){
+						
 					$dataIn = $rowIn;
+					$dataBal[$i]['qty']=$dataIn['qty'];
+					$dataBal[$i]['box']=$dataIn['box'];
+					$dataBal[$i]['goods_partno']=$dataIn['goods_partno'];
+					$dataBal[$i]['place']=$dataIn['place'];
+					
+					$sqlOut = "SELECT IFNULL(sum(qty),0) as qty, IFNULL(sum(box),0) as box,place FROM goods_outstock 
+					where place='".$dataIn['place']."' 
+					and goods_partno='".$dataIn['goods_partno']."'
+					group by goods_partno,place " ;
+					
+					//echo $sqlOut;
+					$queryRecordsOut=$connection->query($sqlOut);
+						while( $rowOut = $queryRecordsOut->fetchRow(DB_FETCHMODE_ASSOC) ) { 
+							if($rowOut!=null){
+							
+							$dataOut = $rowOut;
+							if ($dataIn['qty']-$dataOut['qty']>0 ){
+							$dataBal[$i]['qty']=$dataIn['qty']-$dataOut['qty'];
+							$dataBal[$i]['box']=$dataIn['box']-$dataOut['box'];
+							$dataBal[$i]['goods_partno']=$dataIn['goods_partno'];
+							$dataBal[$i]['place']=$dataIn['place'];
+							
+							}
+							}
+						}	
+					}
+					$i++;
 				}	
 				
-				while( $rowOut = $queryRecordsOut->fetchRow(DB_FETCHMODE_ASSOC) ) { 
-					if($rowOut!=null)
-					$dataOut = $rowOut;
-				}	
-				//print_r($dataIn);
-				//print_r($dataOut);
-				$dataBal[$i]['goods_partno']=$sprod_id[$i];
-				$dataBal[$i]['qty']=$dataIn['qty']-$dataOut['qty'];
-				$dataBal[$i]['box']=$dataIn['box']-$dataOut['box'];
-				$dataBal[$i]['goods_detail']=$row["goods_detail"];
-				//print_r($dataBal[$i]);
+				//print_r($dataBal); 
 		 
-		 
-		$i++;
-		}
  ?>
 	
 	   
@@ -87,7 +64,8 @@ $sql=$sql." and product_model = '$product_model' ";
     <table id="example" class="display" style="width:100%">              
 		<thead>
 		<tr valign="top">
-			<th >id</th>
+			
+			<th  >儲放位置</th>
 			<th  >貨品編號</th>
 			 <th  >箱數</th>
 			 <th  >裝數</th>
@@ -98,15 +76,16 @@ $sql=$sql." and product_model = '$product_model' ";
 		<?
 
 		$j=0;
-		for ($i = 0; $i < count($sprod_id); $i++) {
+		for ($i = 0; $i < count($dataBal); $i++) {
 
 		 
 		?>
         <tr valign="top">
-			<td ><?=$j+1?></td>
-            <td ><?=$sprod_id[$i]?></td>
+			<td ><?=$dataBal[$i]['place']?></td>
+            <td ><?=$dataBal[$i]['goods_partno']?></td>
+			<td ><?=$dataBal[$i]['box']?></td>
+			<td ><?=$dataBal[$i]['qty']?></td>
 			
-			<td ><?=$dataBal[$i]['box']?></td><td ><?=$dataBal[$i]['qty']?></td>
         </tr>
         <?$j++;
 		}

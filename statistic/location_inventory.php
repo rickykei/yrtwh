@@ -35,19 +35,25 @@ include("./include/config.php");
 					and goods_partno='".$dataIn['goods_partno']."'
 					group by goods_partno,place " ;
 					
+					//if ($dataIn['goods_partno']=='C6AO' && $dataIn['place']=='D')
 					//echo $sqlOut;
 					$queryRecordsOut=$connection->query($sqlOut);
 						while( $rowOut = $queryRecordsOut->fetchRow(DB_FETCHMODE_ASSOC) ) { 
 							if($rowOut!=null){
-							
+								
 							$dataOut = $rowOut;
-							if ($dataIn['qty']-$dataOut['qty']>0 ){
+							
+							//if ($dataIn['goods_partno']=='C6AO' && $dataIn['place']=='D'){
+								//print_r($dataIn);
+								//print_r($dataOut);
+							//	}
+						//	if ($dataIn['qty']-$dataOut['qty']>0 ){
 							$dataBal[$i]['qty']=$dataIn['qty']-$dataOut['qty'];
 							$dataBal[$i]['box']=$dataIn['box']-$dataOut['box'];
 							$dataBal[$i]['goods_partno']=$dataIn['goods_partno'];
 							$dataBal[$i]['place']=$dataIn['place'];
 							
-							}
+							//}
 							}
 						}	
 					}

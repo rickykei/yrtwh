@@ -62,36 +62,26 @@ body {
 <?php
 
  $checking=0;
-     	 if ($suppliername=="" && $supplier_invoice_no!="" && $outstock_no=="" && $goods_partno=="" && $goods_partno2=="" && $market_price=="" && $outstock_date_start=="" && $outstock_date_end=="" && $goods_detail=="")
-	 	$sql="SELECT * FROM outstock a where a.supplier_invoice_no like \"%".$supplier_invoice_no."%\"";
-	 else if ($suppliername=="" && $outstock_no!="" && $invoice_no=="" && $goods_partno=="" && $outstock_date_start=="" && $outstock_date_end=="" && $goods_detail=="" && $goods_partno2=="" && $market_price=="")
+     	  if (  $outstock_no!="" && $invoice_no=="" && $goods_partno=="" && $outstock_date_start=="" && $outstock_date_end=="" && $goods_detail=="" && $goods_partno2==""  )
 	 	$sql="SELECT * FROM outstock a where a.outstock_no=".$outstock_no;
-	 else if ($suppliername=="" && $goods_partno!="" && $outstock_no=="" && $supplier_invoice_no=="" && $outstock_date_start=="" && $outstock_date_end=="" && $goods_detail=="" && $goods_partno2=="" && $market_price=="")
-	 	$sql="select a.outstock_date as outstock_date, a.outstock_no as outstock_no, a.supplier_name as supplier_name,a.supplier_invoice_no as supplier_invoice_no,a.staff_name as staff_name,a.count_price as count_price,a.discount_percent as discount_percent,a.total_price as total_price ,b.market_price as market_price,b.discount good_discount from goods_outstock b ,outstock a where b.outstock_no = a.outstock_no and b.goods_partno like \"".$goods_partno."\" group by a.outstock_no";
-	 else if ($suppliername=="" && $outstock_date_start!="" && $outstock_date_end!="" && $goods_partno=="" && $outstock_no=="" && $supplier_invoice_no=="" && $goods_detail=="" && $goods_partno2=="" && $market_price=="")
+	 else if ( $goods_partno!="" && $outstock_no=="" && $outstock_date_start=="" && $outstock_date_end=="" && $goods_detail=="" && $goods_partno2==""  )
+	 	$sql="select a.outstock_date as outstock_date, a.outstock_no as outstock_no, a.supplier_name as supplier_name,a.supplier_invoice_no as supplier_invoice_no,a.staff_name as staff_name,a.count_price as count_price,a.discount_percent as discount_percent,a.total_price as total_price  ,b.discount good_discount from goods_outstock b ,outstock a where b.outstock_no = a.outstock_no and b.goods_partno like \"".$goods_partno."\" group by a.outstock_no";
+	 else if (  $outstock_date_start!="" && $outstock_date_end!="" && $goods_partno=="" && $outstock_no==""   && $goods_detail=="" && $goods_partno2==""  )
 	 	$sql="SELECT * from outstock a where a.outstock_date >= '".$outstock_date_start." 00:00:00' and a.outstock_date <='".$outstock_date_end." 23:59:00'";
-		 else if ($suppliername!="" && $outstock_date_start=="" && $outstock_date_end=="" && $goods_partno=="" && $outstock_no=="" && $supplier_invoice_no=="" && $goods_detail=="" && $goods_partno2=="" && $market_price=="")
-		 {
-		// $sql=" select * from supplier where supplier.supplier_id='".$suppliername."'";
-		//echo $sql;
-		//  $SupplierResult = $db->query($sql);
-		//  $supplierrow = $SupplierResult->fetchRow(DB_FETCHMODE_ASSOC);
-		//20071006  
-		 $sql="SELECT a.outstock_date as outstock_date,a.supplier_name as supplier_name, a.supplier_invoice_no as supplier_invoice_no,a.staff_name as staff_name, a.count_price as count_price, a.discount_percent as discount_percent,a.total_price as total_price,  a.outstock_no as outstock_no from outstock a where a.supplier_name like \"%".$suppliername."%\"";
-		 }
-		  else if ($suppliername=="" && $outstock_date_start=="" && $outstock_date_end=="" && $goods_partno=="" && $outstock_no=="" && $supplier_invoice_no=="" && $goods_detail!="" && $goods_partno2=="" && $market_price=="")
+		  
+		  else if (  $outstock_date_start=="" && $outstock_date_end=="" && $goods_partno=="" && $outstock_no=="" && $supplier_invoice_no=="" && $goods_detail!="" && $goods_partno2=="" && $market_price=="")
 		 {
 		 $sql="SELECT a.outstock_date as outstock_date,a.supplier_name as supplier_name, a.supplier_invoice_no as supplier_invoice_no,a.staff_name as staff_name, a.count_price as count_price, a.discount_percent as discount_percent,a.total_price as total_price,  a.outstock_no as outstock_no from outstock a, goods_outstock b where a.outstock_no=b.outstock_no and b.goods_detail like \"%".$goods_detail."%\"";
 		 }
-		 else if ($suppliername=="" && $outstock_date_start=="" && $outstock_date_end=="" && $goods_partno=="" && $outstock_no=="" && $supplier_invoice_no=="" && $goods_detail=="" && $goods_partno2!="" && $market_price=="")
+		 else if ( $outstock_date_start=="" && $outstock_date_end=="" && $goods_partno=="" && $outstock_no=="" && $supplier_invoice_no=="" && $goods_detail=="" && $goods_partno2!="" && $market_price=="")
 		 {
 		$sql="select a.outstock_date as outstock_date, a.outstock_no as outstock_no, a.supplier_name as supplier_name,a.supplier_invoice_no as supplier_invoice_no,a.staff_name as staff_name,a.count_price as count_price,a.discount_percent as discount_percent,a.total_price as total_price ,b.market_price as market_price from goods_outstock b ,outstock a where b.outstock_no = a.outstock_no and b.goods_partno like \"%".$goods_partno2."%\" group by a.outstock_no";
 		 }
-		  else if ($suppliername=="" && $outstock_date_start=="" && $outstock_date_end=="" && $goods_partno=="" && $outstock_no=="" && $supplier_invoice_no=="" && $goods_detail=="" && $goods_partno2=="" && $market_price!="")
+		  else if (  $outstock_date_start=="" && $outstock_date_end=="" && $goods_partno=="" && $outstock_no=="" && $supplier_invoice_no=="" && $goods_detail=="" && $goods_partno2=="" && $market_price!="")
 		 {
 		$sql="select a.outstock_date as outstock_date, a.outstock_no as outstock_no, a.supplier_name as supplier_name,a.supplier_invoice_no as supplier_invoice_no,a.staff_name as staff_name,a.count_price as count_price,a.discount_percent as discount_percent,a.total_price as total_price ,b.market_price as market_price from goods_outstock b ,outstock a where b.outstock_no = a.outstock_no and b.market_price = ".$market_price." group by a.outstock_no";
 		 }
-		 else if ($suppliername=="" && $outstock_date_start=="" && $outstock_date_end=="" && $goods_partno=="" && $outstock_no=="" && $supplier_invoice_no=="" && $goods_detail=="" && $goods_partno2=="" && $market_price=="")
+		 else if (  $outstock_date_start=="" && $outstock_date_end=="" && $goods_partno=="" && $outstock_no=="" && $supplier_invoice_no=="" && $goods_detail=="" && $goods_partno2=="" && $market_price=="")
 		$sql="SELECT * FROM outstock a ";
 	 else {
 	 	if ($goods_partno!=""){
@@ -101,10 +91,7 @@ body {
 	 		$sql="select * from outstock as a  where ";
 			$checking=0;
 		}
-		if ($supplier_invoice_no!=""){
-			if ($checking==1) $sql.=" and ";
-			$sql.=" a.supplier_invoice_no='".$supplier_invoice_no."' ";
-		}
+		 
 		if ($outstock_no!=""){
 			if($checking==1) $sql.=" and ";
 			$sql.=" a.outstock_no='".$outstock_no."' ";
@@ -113,14 +100,12 @@ body {
 			if($checking==1) $sql.=" and ";
 			$sql.=" a.outstock_date >= '".$outstock_date_start." 00:00:00' and a.outstock_date <='".$outstock_date_end." 23:59:00' ";
 		}
-		if ($suppliername!=""){
-		    if($checking==1) $sql.=" and ";
-			$sql.=" a.supplier_name='".$suppliername."' ";
-		}
+		 
 	}
 
 $sql.=" order by a.outstock_no desc ";
 
+//echo $sql;
    include('Pager_header.php');
    ?>
 

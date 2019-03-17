@@ -54,15 +54,16 @@ function check_del(aa)
 
   <tr>
     <td height="360">&nbsp;</td>
-    <td align="center" valign="top"><table width="101%" height="100%" border="0" cellpadding="2" cellspacing="0">
+    <td align="center" valign="top">
+	<table width="101%" height="100%" border="0" cellpadding="2" cellspacing="0">
       <tr>
         <td width="14%" height="21" bgcolor="#006666"><span class="style6">修改提倉單</span></td>
         <td width="34%"><? echo "< ".$AREA."鋪,第".$PC."機 >";?></td>
         <td width="15%"></td>
-        <td width="37%">&nbsp;</td>
+        <td colspan="2" width="37%">&nbsp;</td>
       </tr>
       <tr bgcolor="#FFFFFF">
-        <td height="24" colspan="4"><table width="100%" border="0" cellpadding="2" cellspacing="0">
+        <td height="24" colspan="5"><table width="100%" border="0" cellpadding="2" cellspacing="0">
           <tr bgcolor="#006666">
             <td height="21"><label><span class="style6">提倉單編號 :</span> </label></td>
             <td colspan="2"><label><span class="style6"><?php echo $outstockrow['outstock_no']; ?></span><input type="hidden" name="outstock_no" value="<?=$outstockrow['outstock_no'];?>"> </label></td>
@@ -74,7 +75,7 @@ function check_del(aa)
             <td width="40%"><input name="outstock_date" type="text" id="outstock_date" value="<? echo $outstockrow['outstock_date']; ?>">
               <input name="cal" id="calendar" value=".." type="button" /></td>
             <td width="17%"><span class="style6">職員 : <?=$outstockrow['staff_name']?>*</span></td>
-            <td><select name="staff_name" id="staff_name">
+            <td ><select name="staff_name" id="staff_name">
               <?php while ($row = $staffResult->fetchRow(DB_FETCHMODE_ASSOC))
 			  {
 			  
@@ -97,13 +98,14 @@ function check_del(aa)
 			<option value="元朗倉" <?php if ($outstockrow['to_shop']=='元朗倉') { echo "selected";}?>>元朗倉</option>  
             </select></td>
             <td width="17%" ><span class="style6">運送方法 : </span></td>
-            <td width="35%" ><select name="delivery_method" id="delivery_method">
+            <td colspan="2" width="35%" ><select name="delivery_method" id="delivery_method">
               <option value="大車" <?php if ($outstockrow['delivery_method']=='大車') { echo "selected";}?>>大車</option>  
 			<option value="24吊" <?php if ($outstockrow['delivery_method']=='24吊') { echo "selected";}?>>24吊</option>  
             </select></td>
           </tr>
       <tr bgcolor="#FFFFFF">
-        <td colspan="4"><table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF">
+        <td colspan="5">
+		<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF">
           <tr bgcolor="#006666">
         
             <td width="6%"><span class="style6">行數</span></td>
@@ -153,7 +155,7 @@ while($goods_outstockrow = $outstockresult->fetchRow(DB_FETCHMODE_ASSOC))
 			<input name="qty[]" type="text" id="qty<?echo $i;?>"   tabindex="<?$tab++;echo $tab?>"  value="<? echo $goods_outstockrow['qty']; ?>" size="7" maxlength="7" onFocus="checkInputQty(<?=$i?>)"></td>
                        
 			 
-			 <td><div align="center">
+			 <td  ><div align="center">
               <input name="goods_detail[]" type="text" id="goods_detail<?echo $i;?>" value="<? echo htmlspecialchars($goods_outstockrow['goods_detail']); ?>" size="35" maxlength="40">
             </div></td>
             
@@ -183,7 +185,7 @@ for ($y=$i;$y<$outstockRecord;$y++)
 			<input type="hidden" id="weight_per_unit<? echo $i; ?>" value="0"/>
 			<input type="hidden" id="weight_per_row<? echo $i; ?>" value="0"/>
 			<input  name="qty[]" type="text" id="qty<?echo $y;?>"  tabindex="<?$tab++;echo $tab?>"  value="0" size="7" maxlength="7"  onFocus="checkInputQty(<?=$i?>)"></td>
-              <td><div align="center">
+              <td  ><div align="center">
               <input name="goods_detail[]" type="text" id="goods_detail<?echo $y;?>" value="" size="35" maxlength="40">
             </div></td>
 			 
@@ -201,7 +203,7 @@ for ($y=$i;$y<$outstockRecord;$y++)
           </td>
       </tr>
       <tr bgcolor="#FFFFFF">
-        <td height="" colspan="4">
+        <td height="" colspan="5">
              </td>
       </tr>
       <tr>
@@ -210,7 +212,7 @@ for ($y=$i;$y<$outstockRecord;$y++)
         <td height=""><input type="hidden" name="update" value="3" /><input type="hidden" name="AREA" value="<?echo $AREA;?>" /><input type="hidden" name="PC" value="<?echo $PC;?>" /></td>
         <td><input name="clear" type="reset" id="clear" value="清除">
           <input name="submitb" type="submit" id="submitb" value="更新記錄" >
-		  </form>
+		  </form></td><td>
           <form name="outstock_del_form" method="POST" action="/?page=outstock&subpage=outstock_del.php">
 		<input type="hidden" name="outstock_no" value="<?echo $outstock_no;?>" >
         <input type="submit" name="Submit" value="刪除此項單" onClick="javascript:check_del('<?echo $goods_partno;?>')">

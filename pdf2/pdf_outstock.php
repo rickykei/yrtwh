@@ -126,7 +126,7 @@ function Body($invoice_no)
 	$this->Cell(60,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$row2['goods_detail']),$border,0,'R',0);
 	//remove box num requested by alvin 20190109
 	//$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$row2['box']."(".calOutstockBoxNum($row2['goods_partno'],$row2['box'],$invoice_no,$connection).")"),$border,0,'C',0);
-	$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$row2['box'],$border,0,'C',0);
+	$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$row2['box']),$border,0,'C',0);
 	$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$row2['qty']),$border,0,'R',0);
 	$this->Cell(32,$body_height,iconv("UTF-8", "BIG5-HKSCS",''.$weight),$border,1,'L',0);
 	

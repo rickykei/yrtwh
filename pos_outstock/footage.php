@@ -11,8 +11,11 @@
 		
 		<div class="ui-block-d">
 		<a class="ui-button ui-widget ui-corner-all quickinput" href="" rel="external"  data-inline="true" >快速輸入</a> 
-		</div>
-		
+			
+	
+		</div><div class="ui-block-d"> <a class="ui-button ui-widget ui-corner-all" href="" rel="external" id="cleanall">清空</a>
+				</div>
+
 	 
 	</div>	 	
  	

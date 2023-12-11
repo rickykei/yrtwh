@@ -13,7 +13,7 @@ if ($update==1)
    $goods_detail=addslashes($goods_detail);
    
     
-   $query="update sumgoods set box_label_start_num='$box_label_start_num',status='Y', goods_detail='$goods_detail',  unitid='$unitid', qty_per_unit=$qty_per_unit,weight=$weight,pos_label='$pos_label' ,model='$model',model2='$model2',model3='$model3' ,model3_x='$model3_x' ,model3_y='$model3_y' where goods_partno='$goods_partno'";
+   $query="update sumgoods set inshop_quota='$inshop_quota', box_label_start_num='$box_label_start_num',status='Y', goods_detail='$goods_detail',  unitid='$unitid', qty_per_unit=$qty_per_unit,weight=$weight,pos_label='$pos_label' ,model='$model',model2='$model2',model3='$model3' ,model3_x='$model3_x' ,model3_y='$model3_y' where goods_partno='$goods_partno'";
 	 
 	  
 	 
@@ -264,6 +264,10 @@ function check_del(aa)
         <td width="142">&nbsp;</td>
         <td width="346">&nbsp;</td>
       </tr>
+	  
+	    <tr bgcolor="#999999"> <td  color="#FFFFFF" size="2" class="style6"> 入舖備用量</td><td colspan="3" ><input class="login" type="text" name="inshop_quota" value="<?=$row["inshop_quota"];?>"/>
+	  </td></tr>
+	  
 	  <tr> 
         <td width="113">&nbsp;</td>
         <td width="275" height="20" align="left" valign="middle"> 

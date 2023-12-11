@@ -19,7 +19,7 @@
 		 <a class="ui-button ui-widget ui-corner-all" href="#" id="nextlink">下一頁</a>
 		  
 		 <a class="ui-button ui-widget ui-corner-all" href="/?pos=<?php echo $pos;?>&page=pos_outstock&subpage=index5_edit.php&outstock_no=<?php echo $outstock_no;?>" rel="external" id="ino">改出貨單</a>
-		 <a class="ui-button ui-widget ui-corner-all" href="" rel="external" id="cleanall">清空</a>
+		
 	
 		 <br>
 		 <div id="modelmenu">

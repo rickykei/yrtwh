@@ -60,10 +60,11 @@ function check_del(aa)
         <td width="14%" height="21" bgcolor="#006666"><span class="style6">修改入倉單</span></td>
         <td width="34%"><? echo "< ".$AREA."鋪,第".$PC."機 >";?></td>
         <td width="15%"></td>
-        <td width="37%">&nbsp;</td>
+        <td width="">&nbsp;</td>
+        <td></td>
       </tr>
       <tr bgcolor="#FFFFFF">
-        <td height="24" colspan="4"><table width="100%" border="0" cellpadding="2" cellspacing="0">
+        <td height="24" colspan="5"><table width="100%" border="0" cellpadding="2" cellspacing="0">
           <tr bgcolor="#006666">
             <td height="21"><label><span class="style6">入倉單編號 :</span> </label></td>
             <td colspan="2"><label><span class="style6"><?php echo $instockrow['instock_no']; ?></span><input type="hidden" name="instock_no" value="<?=$instockrow['instock_no'];?>"> </label></td>
@@ -90,7 +91,7 @@ function check_del(aa)
         </table></td>
       </tr>
       <tr bgcolor="#FFFFFF">
-        <td colspan="4"><table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF">
+        <td colspan="5"><table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#FFFFFF">
           <tr bgcolor="#006666">
         
             <td width="6%"><span class="style6">行數</span></td>
@@ -150,7 +151,7 @@ for ($y=$i;$y<$instockRecord;$y++)
             <td><div align="center">
 			   <input name="box[]" type="text" id="box<?echo $y;?>" tabindex="<?$tab++;echo $tab?>" class="box" value="0" size="6" maxlength="6" onFocus="javascript:document.getElementById('action<?=$y?>').click();">
 			 </div></td>
-			<td><input  name="qty[]" type="text" id="qty<?echo $y;?>"  tabindex="<?$tab++;echo $tab?>"  value="0" size="7" maxlength="7"></td>
+			<td><input  name="qty[]" type="text" id="qty<?echo $y;?>" onfocus="checkQtyPerBox(<?=$i?>)" tabindex="<?$tab++;echo $tab?>"  value="0" size="7" maxlength="7"></td>
               <td><div align="center">
               <input name="goods_detail[]" type="text" id="goods_detail<?echo $y;?>" value="" size="35" maxlength="40">
             </div></td>
@@ -169,7 +170,7 @@ for ($y=$i;$y<$instockRecord;$y++)
           </td>
       </tr>
       <tr bgcolor="#FFFFFF">
-        <td height="" colspan="4">
+        <td height="" colspan="5">
              </td>
       </tr>
       <tr>
@@ -178,7 +179,8 @@ for ($y=$i;$y<$instockRecord;$y++)
         <td height=""><input type="hidden" name="update" value="3" /><input type="hidden" name="AREA" value="<?echo $AREA;?>" /><input type="hidden" name="PC" value="<?echo $PC;?>" /></td>
         <td><input name="clear" type="reset" id="clear" value="清除">
           <input name="submitb" type="submit" id="submitb" value="更新記錄" >
-		  </form>
+		  </form></td>
+<td>
           <form name="instock_del_form" method="POST" action="/?page=instock&subpage=instock_del.php">
 		<input type="hidden" name="instock_no" value="<?echo $instock_no;?>" >
         <input type="submit" name="Submit" value="刪除此項貨品名" onClick="javascript:check_del('<?echo $instock_no;?>')">

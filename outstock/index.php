@@ -99,7 +99,7 @@ for ($i=0;$i<18;$i++)
 	?>
           <tr bgcolor="#CCCCCC">
             <td><div align="center"><?= $i+1; ?></div></td>
-            <td><input name="goods_partno[]" type="text" xx="<? echo $i; ?>" id="goods_partno<? echo $i; ?>" size="15" maxlength="30" tabindex="<?$tab++;echo $tab?>"   />
+            <td><input name="goods_partno[]" type="text" xx="<? echo $i; ?>" id="goods_partno<? echo $i; ?>" size="15" maxlength="30" tabindex="<?$tab++;echo $tab?>"  onChange="findPartNoAjax('<?=$i?>')" />
             <input type=button name="search" value=".." onclick="javascript:AddrWindow('<?=$i; ?>')" >
             <input name="action<?=$i?>" type="button" id="action<?=$i?>"  value="?"></td>
 			<td>
@@ -111,12 +111,14 @@ for ($i=0;$i<18;$i++)
 			
             <td><div align="center">
 			   <input name="box[]" type="text" tabindex="<?$tab++;echo $tab?>" class="box" id="box<? echo $i; ?>" value="0" size="7" maxlength="7" onFocus="checkStock(<?=$i?>)">
-			 </div></td>
+			 </div><div id="box<? echo $i; ?>_response"></div></td>
 			<td>
 			<input type="hidden" id="qty_per_unit<? echo $i; ?>" value="0"/>
 			<input type="hidden" id="weight_per_unit<? echo $i; ?>" value="0"/>
 			<input type="hidden" id="weight_per_row<? echo $i; ?>" value="0"/>
 			<input name="qty[]" type="text" id="qty<? echo $i; ?>"   value="1" size="7" maxlength="7" tabindex="<?$tab++;echo $tab?>" onFocus="checkInputQty(<?=$i?>)" onKeyPress="next_text_box(event,'goods_partno<?=$i+1;?>');">
+			
+			<div id="qty<? echo $i; ?>_response"></div>
 			</td>
             <td><div align="center">
               <input name="goods_detail[]" type="text" id="goods_detail<? echo $i; ?>" size="35" maxlength="40">

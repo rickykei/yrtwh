@@ -19,7 +19,6 @@
 		 <a class="ui-button ui-widget ui-corner-all" href="#" id="nextlink">下一頁</a>
 		 <a class="ui-button ui-widget ui-corner-all" href="/?pos=<?php echo $pos;?>&page=pos_outstock&subpage=index5.php" rel="external" id="ino">提貨單</a>
 	
-		 <a class="ui-button ui-widget ui-corner-all" href="" rel="external" id="cleanall">清空</a>
 	
 		 <br>
 		 <div id="modelmenu">
@@ -30,13 +29,12 @@
 			 ?>
 			<a class="ui-button ui-widget ui-corner-all" href="/?pos=<?php echo $pos;?>&page=pos_outstock&subpage=index2.php&parent1_name=<?php echo stripslashes($typerow['typeName']);?>&parent_id=<?php echo stripslashes($typerow['id']);?>"  rel="external" ><?php echo stripslashes($typerow['typeName']);?></a> 
 			  <?php
-			  if($i==5){
-				  echo "<p>";
-				  $i=0;
-			  }
 			  
-		}?>
-		
+			  
+		}
+		 echo "<p>";
+		?>
+		 
 		
 		</div>
  </div>

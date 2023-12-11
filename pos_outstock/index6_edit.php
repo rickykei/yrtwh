@@ -102,7 +102,7 @@ else{
   
   
 ?> <SCRIPT LANGUAGE="JavaScript">
-popUp("/outstock/pdf/<?=$outstock_no?>.pdf");
+popUp("/outstock/pdf/<?=$outstock_no?>.pdf?"+date("YmdHis"));
 //window.location="/?page=outstock&subpage=index.php"; 
 </script>
 <link href="./include/outstock.css" rel="stylesheet" type="text/css">

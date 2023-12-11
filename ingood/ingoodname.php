@@ -56,12 +56,14 @@ if ($add==1) //after submit
 			 //update sumgood subcode to slave
 			 $query="update sumgoods set mix='S' where goods_partno='".$partno_sub_arr[$i]."'";	  
 			 
+			 
 			  mysql_query($query);
 			}
 			
 			
 	   }
 	  }else {
+		  echo $query;
 		    $message="Too Bad!".mysql_error() ;
 	  }
      
@@ -272,6 +274,11 @@ body {
         <input type="text" name="pos_label">
       </td>
     </tr>
+	
+	  <tr bgcolor="#666666"> <td bgcolor="#669933" color="#FFFFFF" size="2" class="style6"> 入舖備用量</td><td colspan="3" bgcolor="#669933"><input class="login" type="text" name="inshop_quota" value="<?=$row["inshop_quota"];?>"/>
+	  </td></tr>
+	  
+	  
     <tr bgcolor="#006666"> 
       <td width="15%" bgcolor="#669933">&nbsp;</td>
       <td width="85%" bgcolor="#669933"><span class="style6"><input type="submit" name="submit" onclick="JavaScript:checkform();"/> 

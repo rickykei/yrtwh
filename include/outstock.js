@@ -109,3 +109,21 @@ function DisplayKey(e) {
    character=String.fromCharCode(keycode);
    window.status += character;
   }
+ 
+function findPartNoAjax(goods_row) {
+	   
+	var index = goods_row;
+	   
+			console.log(index);
+			var cc=$('#goods_partno'+index).val();
+			console.log(cc);
+			var partno=encodeURIComponent(cc);
+           var url = "/outstock/get_out_record_response.php";
+			 //var url = "/outstock/lang.json";
+
+            $.post(url,{goods_partno: partno},function (data) {
+				console.log(data);
+               $('#box'+index+'_response').html(data[0]);
+			   $('#qty'+index+'_response').html(data[1]);
+            });
+} 

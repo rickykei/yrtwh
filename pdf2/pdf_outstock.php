@@ -82,14 +82,14 @@ function Body($invoice_no)
  
 
 	$this->Cell(36,$header_height,iconv("UTF-8", "BIG5-HKSCS","TO："),$border,0,'R',0);
-	$this->Cell(35,$header_height,iconv("UTF-8", "BIG5-HKSCS","新界粉嶺軍地"),$border,0,'L',0);
+	$this->Cell(35,$header_height,iconv("UTF-8", "BIG5-HKSCS","屯門倉"),$border,0,'L',0);
 	$this->Cell(35,$header_height,iconv("UTF-8", "BIG5-HKSCS","FAX："),$border,0,'R',0);
 	$this->Cell(36,$header_height,iconv("UTF-8", "BIG5-HKSCS","2674-1073"),$border,1,'L',0);
 	
 	 $this->Cell(140,$header_height,iconv("UTF-8", "BIG5-HKSCS","    ** 新界粉嶺軍地北村DD83 Lot No.118"),$border,1,'L',0);
  
 	$this->Cell(36,$header_height,iconv("UTF-8", "BIG5-HKSCS","ATTN："),$border,0,'R',0);
-	$this->Cell(35,$header_height,iconv("UTF-8", "BIG5-HKSCS","阿燊 / 阿趙"),$border,0,'L',0);
+	$this->Cell(35,$header_height,iconv("UTF-8", "BIG5-HKSCS","呀安"),$border,0,'L',0);
 	$this->Cell(35,$header_height,iconv("UTF-8", "BIG5-HKSCS","提單號碼："),$border,0,'R',0);
 	$this->Cell(36,$header_height,iconv("UTF-8", "BIG5-HKSCS","FL-".$outstock_no),$border,1,'L',0);
 	
@@ -138,9 +138,9 @@ function Body($invoice_no)
    $this->SetFont('Big5','',14);
    $result->free ();
 	$this->Ln(10);
-	$this->Cell(22,$body_height,iconv("UTF-8", "BIG5-HKSCS","軍地倉去"),$border,0,'R',0);
+	$this->Cell(22,$body_height,iconv("UTF-8", "BIG5-HKSCS","屯門倉去"),$border,0,'R',0);
 	$this->Cell(40,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$to_shop),$border,0,'R',0);
-	$this->Cell(40,$body_height,iconv("UTF-8", "BIG5-HKSCS",""),$border,0,'L',0);
+	$this->Cell(40,$body_height,iconv("UTF-8", "BIG5-HKSCS","去軍地"),$border,0,'L',0);
 	$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$delivery_method),$border,0,'R',0);
 	$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS",''),$border,1,'L',0);
 	$this->Ln(10);

@@ -95,12 +95,15 @@ function check_del(aa)
             <td width="28%" > 
 			<select name="to_shop" id="to_shop"><option value="自提" <?php if ($outstockrow['to_shop']=='自提') { echo "selected";}?>>自提</option>  
             <option value="Y鋪" <?php if ($outstockrow['to_shop']=='Y鋪') { echo "selected";}?>>Y鋪</option>  
-			<option value="元朗倉" <?php if ($outstockrow['to_shop']=='元朗倉') { echo "selected";}?>>元朗倉</option>  
+			<option value="大海" <?php if ($outstockrow['to_shop']=='大海') { echo "selected";}?>>大海</option>  
             </select></td>
             <td width="17%" ><span class="style6">運送方法 : </span></td>
             <td colspan="2" width="35%" ><select name="delivery_method" id="delivery_method">
-              <option value="大車" <?php if ($outstockrow['delivery_method']=='大車') { echo "selected";}?>>大車</option>  
-			<option value="24吊" <?php if ($outstockrow['delivery_method']=='24吊') { echo "selected";}?>>24吊</option>  
+              <option value="9456" <?php if ($outstockrow['delivery_method']=='9456') { echo "selected";}?>>9456</option>  
+			<option value="3819" <?php if ($outstockrow['delivery_method']=='3819') { echo "selected";}?>>3819</option>  
+			<option value="6586" <?php if ($outstockrow['delivery_method']=='6586') { echo "selected";}?>>6586</option>  
+			<option value="897" <?php if ($outstockrow['delivery_method']=='897') { echo "selected";}?>>897</option>  
+		  
             </select></td>
           </tr>
       <tr bgcolor="#FFFFFF">

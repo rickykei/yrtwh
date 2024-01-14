@@ -140,7 +140,7 @@ function Body($invoice_no)
 	$this->Ln(10);
 	$this->Cell(22,$body_height,iconv("UTF-8", "BIG5-HKSCS","屯門倉去"),$border,0,'R',0);
 	$this->Cell(40,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$to_shop),$border,0,'R',0);
-	$this->Cell(40,$body_height,iconv("UTF-8", "BIG5-HKSCS","去軍地"),$border,0,'L',0);
+	$this->Cell(40,$body_height,iconv("UTF-8", "BIG5-HKSCS"," "),$border,0,'L',0);
 	$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS","".$delivery_method),$border,0,'R',0);
 	$this->Cell(20,$body_height,iconv("UTF-8", "BIG5-HKSCS",''),$border,1,'L',0);
 	$this->Ln(10);

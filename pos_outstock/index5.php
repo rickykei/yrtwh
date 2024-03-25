@@ -199,12 +199,14 @@
 			<select name="to_shop" id="to_shop">
 <option value="自提">自提</option>
             <option value="Y鋪">Y鋪</option>  
-			<option value="元朗倉">元朗倉</option>  
+			<option value="大海">大海</option>  
             </select></td>
             <td width="17%" ><span class="style6">運送方法 : </span></td>
             <td width="35%" ><select name="delivery_method" id="delivery_method">
-              <option value="大車">大車</option>  
-			<option value="24吊">24吊</option>  
+                   <option value="9456">9456</option>  
+			<option value="3819">3819</option>  
+			 <option value="6586">6586</option>  
+			<option value="897">897</option>  
             </select></td>
           </tr>
           
